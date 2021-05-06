@@ -1,4 +1,5 @@
 .idea/
+migrations/
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -20,3 +21,8 @@
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
