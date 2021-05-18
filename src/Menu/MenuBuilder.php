@@ -18,7 +18,9 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        // $menu->addChild('Home', ['route' => 'main']);
+        $menu->addChild('song', ['route' => 'songs']);
+        $menu->addChild('album', ['route' => 'albums']);
+        $menu->addChild('artist', ['route' => 'artists']);
 
         return $menu;
     }
