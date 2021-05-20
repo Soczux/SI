@@ -1,3 +1,24 @@
 body {
     background-color: lightgray;
+    display: flex;
+}
+
+#navigation {
+    display: flex;
+    align-items: center;
+    width: 400px;
+    margin: auto;
+}
+
+#navigation > ul {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#navigation > ul > li {
+    display: flex;
+    width: 70px;
 }

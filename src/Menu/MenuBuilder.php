@@ -24,4 +24,14 @@ class MenuBuilder
 
         return $menu;
     }
+
+    public function loginMenu(array $option): ItemInterface
+    {
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('registration', ['route' => 'registration']);
+        $menu->addChild('login', ['route' => 'login']);
+
+        return $menu;
+    }
 }
