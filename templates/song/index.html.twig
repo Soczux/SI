@@ -1,7 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SongController!{% endblock %}
+{% block title %}{{ 'pages.songs' | trans | capitalize }}{% endblock %}
 
 {% block content %}
-
+    <table id="songs-table">
+        <thead>
+            <tr>
+                <th>{{ 'song.title' | trans }}</th>
+                <th>{{ 'song.artist' | trans }}</th>
+                <th>{{ 'song.play' | trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr>
+                <td>{{ song.title }}</td>
+                <td>{{ song.getArtist().getName() }}</td>
+                <td>Tutaj odtwarzacz</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
