@@ -4,3 +4,17 @@ pages:
   artists: artyści
   registration: rejestracja
   login: logowanie
+
+artist:
+  name: Artysta
+  country: Kraj pochodzenia
+
+song:
+  title: Tytuł
+  artist: Wykonawca
+  play: Posłuchaj
+
+album:
+  title: Tytuł
+  artist: Wykonawca
+  cover: Okładka

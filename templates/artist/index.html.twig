@@ -1,7 +1,32 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('artist') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('artist') }}
+{% endblock %}
+
 {% block title %}Hello ArtistController!{% endblock %}
 
 {% block content %}
-
+    <table id="artists-table">
+        <thead>
+        <tr>
+            <th>{{ 'artist.name' | trans }}</th>
+            <th>{{ 'artist.country' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for artist in artists %}
+            <tr>
+                <td>{{ artist.name }}</td>
+                <td><img src="{{ asset('build/gfx/countries/' ~ artist.getCountry().getIso() | lower ~ '.png') }}" alt="{{ artist.getCountry().getIso() | lower }}"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

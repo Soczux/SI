@@ -34,6 +34,11 @@ class Country
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="string", length=2)
+     */
+    private $iso;
+
     public function __construct()
     {
         $this->artists = new ArrayCollection();
@@ -115,5 +120,22 @@ class Country
         }
 
         return $this;
+    }
+
+    public function getIso(): ?string
+    {
+        return $this->iso;
+    }
+
+    public function setIso(string $iso): self
+    {
+        $this->iso = $iso;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
