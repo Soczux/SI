@@ -1,0 +1,6 @@
+pages:
+  songs: piosenki
+  albums: albumy
+  artists: artyści
+  registration: rejestracja
+  login: logowanie

@@ -18,9 +18,9 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('song', ['route' => 'songs']);
-        $menu->addChild('album', ['route' => 'albums']);
-        $menu->addChild('artist', ['route' => 'artists']);
+        $menu->addChild('pages.songs', ['route' => 'songs']);
+        $menu->addChild('pages.albums', ['route' => 'albums']);
+        $menu->addChild('pages.artists', ['route' => 'artists']);
 
         return $menu;
     }
@@ -29,8 +29,8 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('registration', ['route' => 'registration']);
-        $menu->addChild('login', ['route' => 'login']);
+        $menu->addChild('pages.registration', ['route' => 'registration']);
+        $menu->addChild('pages.login', ['route' => 'login']);
 
         return $menu;
     }
