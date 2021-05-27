@@ -3,6 +3,7 @@
 body {
     background-color: lightgray;
     display: flex;
+    flex-direction: column;
     font-family: 'Mukta', sans-serif;
 }
 
@@ -37,6 +38,13 @@ a {
 }
 
 #log-reg-panel {
+    position: absolute;
+    top: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-panel {
     position: absolute;
     top: 0; right: 0;
     display: flex;

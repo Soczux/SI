@@ -19,11 +19,19 @@
         {% block body %}
         <nav id="navigation">
             {% block navigation %}
-                {% block loginPanel %}
-                <div id="log-reg-panel">
-                        {{ knp_menu_render('loginMenu') }}
-                </div>
-                {% endblock loginPanel %}
+                {% if not app.user %}
+                    {% block login_panel %}
+                    <div id="log-reg-panel">
+                            {{ knp_menu_render('loginMenu') }}
+                    </div>
+                    {% endblock %}
+                {% else %}
+                    {% block profile_panel %}
+                    <div id="profile-panel">
+                    </div>
+                    {% endblock %}
+                {% endif %}
+
                 {{ knp_menu_render('mainMenu')}}
             {% endblock %}
         </nav>
