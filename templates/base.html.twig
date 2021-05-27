@@ -17,13 +17,13 @@
     </head>
     <body>
         {% block body %}
-        <div id="log-reg-panel">
-            {% block loginPanel %}
-            {{ knp_menu_render('loginMenu') }}
-            {% endblock loginPanel %}
-        </div>
         <nav id="navigation">
             {% block navigation %}
+                {% block loginPanel %}
+                <div id="log-reg-panel">
+                        {{ knp_menu_render('loginMenu') }}
+                </div>
+                {% endblock loginPanel %}
                 {{ knp_menu_render('mainMenu')}}
             {% endblock %}
         </nav>
