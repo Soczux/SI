@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('album') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('album') }}
+{% endblock %}
+
 {% block title %}{{ 'pages.albums' | trans | capitalize }}{% endblock %}
 
 {% block content %}
@@ -16,7 +26,7 @@
             <tr>
                 <td>{{ album.name }}</td>
                 <td>{{ album.getArtist().getName() }}</td>
-                <td><img src="{{ asset('build/gfx/' ~ album.getLogoUrl()) }}" alt="{{ album.name }}"></td>
+                <td><img src="{{ asset('build/gfx/covers/' ~ album.getLogoUrl()) }}" alt="{{ album.name }}"></td>
             </tr>
         {% endfor %}
         </tbody>

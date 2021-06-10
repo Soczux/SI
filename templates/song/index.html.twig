@@ -16,7 +16,12 @@
             <tr>
                 <td>{{ song.title }}</td>
                 <td>{{ song.getArtist().getName() }}</td>
-                <td>Tutaj odtwarzacz</td>
+                <td>
+                    <audio controls>
+                        <source src="{{ asset('build/audio/' ~ song.getUrl()) }}">
+                        Your browser does not support the audio element.
+                    </audio>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

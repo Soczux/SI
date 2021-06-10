@@ -17,6 +17,10 @@ Encore
         from: './assets/gfx',
         to: 'gfx/[path][name].[ext]'
     })
+    .copyFiles({
+        from: './assets/audio',
+        to: 'audio/[path][name].[ext]'
+    })
     /*
      * ENTRY CONFIG
      *
@@ -25,6 +29,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('artist', './assets/artist.js')
+    .addEntry('album', './assets/album.js')
     
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

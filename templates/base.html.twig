@@ -26,6 +26,9 @@
                 {% else %}
                     {% block profile_panel %}
                     <div id="profile-panel">
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_panel') }}">Admin panel</a>
+                        {% endif %}
                     </div>
                     {% endblock %}
                 {% endif %}

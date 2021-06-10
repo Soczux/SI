@@ -50,3 +50,15 @@ a {
     display: flex;
     flex-direction: column;
 }
+
+table {
+    border: 3px solid greenyellow;
+}
+
+th {
+    border: 3px solid greenyellow;
+}
+
+td {
+    border: 3px solid greenyellow;
+}
