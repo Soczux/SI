@@ -26,7 +26,7 @@ class AlbumType extends AbstractType
                             'image/apng',
                             'image/avif',
                             'image/svg',
-                            'image/webp'
+                            'image/webp',
                         ],
                         'mimeTypesMessage' => 'Akceptujemy tylko pliki graficzne',
                     ]),

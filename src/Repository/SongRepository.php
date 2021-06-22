@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,18 @@ class SongRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Song::class);
+    }
+
+    /**
+     * @param Song $song Song to add
+     *
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function add(Song $song): void
+    {
+        $this->_em->persist($song);
+        $this->_em->flush();
     }
 
     // /**

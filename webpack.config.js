@@ -17,10 +17,6 @@ Encore
         from: './assets/gfx',
         to: 'gfx/[path][name].[ext]'
     })
-    .copyFiles({
-        from: './assets/audio',
-        to: 'audio/[path][name].[ext]'
-    })
     /*
      * ENTRY CONFIG
      *

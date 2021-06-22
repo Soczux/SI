@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Album;
 use App\Entity\Artist;
+use App\Entity\Song;
 use App\Form\AlbumType;
 use App\Form\ArtistType;
+use App\Form\SongType;
 use App\Repository\AlbumRepository;
 use App\Repository\ArtistRepository;
+use App\Repository\SongRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,9 +38,42 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/song/add", name="admin_panel_song_add")
      */
-    public function songAdd(): Response
+    public function songAdd(Request $request, SongRepository $songRepository, LoggerInterface $logger): Response
     {
-        return $this->render('admin_panel/index.html.twig');
+        $song = new Song();
+
+        $form = $this->createForm(SongType::class, $song);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $song = $form->getData();
+            $songFile = $form->get('url')->getData();
+
+            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $song->getTitle());
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
+
+            try {
+                $songFile->move($this->getParameter('audio_file_directory'), $newFilename);
+            } catch (FileException $exception) {
+                $logger->error('Cannot move file', [
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+
+            $song->setUrl($newFilename);
+
+            try {
+                $songRepository->add($song);
+            } catch(Exception $exception) {
+                $logger->error('Cannot add song', [
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        return $this->render('admin_panel/song/add.html.twig', [
+            'song_add_form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -58,10 +94,7 @@ class AdminPanelController extends AbstractController
             $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
 
             try {
-                $coverFile->move(
-                    $this->getParameter('covers_directory'),
-                    $newFilename
-                );
+                $coverFile->move($this->getParameter('covers_directory'), $newFilename);
             } catch (FileException $exception) {
                 $logger->error('Cannot move file', [
                     'exception' => $exception->getMessage(),

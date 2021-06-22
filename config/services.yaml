@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     covers_directory: '%kernel.project_dir%/public/gfx/covers'
+    audio_file_directory: '%kernel.project_dir%/public/audio/songs'
 
 services:
     # default configuration for services in *this* file
