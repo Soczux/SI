@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Album;
+use App\Entity\Artist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +20,18 @@ class AlbumRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Album::class);
+    }
+
+    /**
+     * @param Album $album Album to add
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add(Album $album): void
+    {
+        $this->_em->persist($album);
+        $this->_em->flush();
     }
 
     // /**

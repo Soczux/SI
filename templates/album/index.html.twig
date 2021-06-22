@@ -26,7 +26,7 @@
             <tr>
                 <td>{{ album.name }}</td>
                 <td>{{ album.getArtist().getName() }}</td>
-                <td><img src="{{ asset('build/gfx/covers/' ~ album.getLogoUrl()) }}" alt="{{ album.name }}"></td>
+                <td><img src="{{ asset('gfx/covers/' ~ album.getLogoUrl()) }}" alt="{{ album.name }}"></td>
             </tr>
         {% endfor %}
         </tbody>
