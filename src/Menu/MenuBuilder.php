@@ -34,4 +34,15 @@ class MenuBuilder
 
         return $menu;
     }
+
+    public function adminPanelMenu(array $options): ItemInterface
+    {
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('Dodaj piosenkę', ['route' => 'admin_panel_song_add']);
+        $menu->addChild('Dodaj artystę', ['route' => 'admin_panel_artist_add']);
+        $menu->addChild('Dodaj album', ['route' => 'admin_panel_album_add']);
+
+        return $menu;
+    }
 }

@@ -2,19 +2,73 @@
 
 namespace App\Controller;
 
+use App\Entity\Artist;
+use App\Form\ArtistType;
+use App\Repository\ArtistRepository;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * @Route("/admin_panel")
+ *
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminPanelController extends AbstractController
 {
     /**
-     * @Route("/admin_panel", name="admin_panel")
+     * @Route("/", name="admin_panel")
      */
     public function index(): Response
     {
-        return $this->render('admin_panel/index.html.twig', [
-            'controller_name' => 'AdminPanelController',
+        return $this->render('admin_panel/index.html.twig');
+    }
+
+    /**
+     * @Route("/song/add", name="admin_panel_song_add")
+     */
+    public function songAdd(): Response
+    {
+        return $this->render('admin_panel/index.html.twig');
+    }
+
+    /**
+     * @Route("/album/add", name="admin_panel_album_add")
+     */
+    public function albumAdd(): Response
+    {
+        return $this->render('admin_panel/index.html.twig');
+    }
+
+    /**
+     * @Route("/artist/add", name="admin_panel_artist_add")
+     */
+    public function artistAdd(Request $request, ArtistRepository $artistRepository, LoggerInterface $logger): Response
+    {
+        $artist = new Artist();
+
+        $form = $this->createForm(ArtistType::class, $artist);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $artist = $form->getData();
+
+            try {
+                $artistRepository->add($artist);
+            } catch (Exception $exception) {
+                $logger->error('Cannot add artist', [
+                    'exception' => $exception->getMessage(),
+                    ]
+                );
+            }
+        }
+
+        return $this->render('admin_panel/artist/add.html.twig', [
+            'add_artist_form' => $form->createView(),
         ]);
     }
 }
