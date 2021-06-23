@@ -34,6 +34,18 @@ class AlbumRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param Album $album Album to delete
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Album $album): void
+    {
+        $this->_em->remove($album);
+        $this->_em->flush();
+    }
+
     // /**
     //  * @return Album[] Returns an array of Album objects
     //  */

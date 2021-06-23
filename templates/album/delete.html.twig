@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'pages.albums' | trans | capitalize }}{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>Czy na pewno chcesz usunąć album {{ album.name }}?</h1>
+        <a href="{{ path('album_delete', { 'id': album.id, 'action': 'confirm' }) }}">Potwierdź</a>
+        <a href="{{ path('albums') }}">Anuluj</a>
+    </div>
+{% endblock %}

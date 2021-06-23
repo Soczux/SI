@@ -19,6 +19,9 @@
             <th>{{ 'album.title' | trans }}</th>
             <th>{{ 'album.artist' | trans }}</th>
             <th>{{ 'album.cover' | trans }}</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th>X</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -27,6 +30,11 @@
                 <td>{{ album.name }}</td>
                 <td>{{ album.getArtist().getName() }}</td>
                 <td><img src="{{ asset('gfx/covers/' ~ album.getLogoUrl()) }}" alt="{{ album.name }}"></td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                        <a href="{{ path('album_delete', { 'id': album.id }) }}">X</a>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
