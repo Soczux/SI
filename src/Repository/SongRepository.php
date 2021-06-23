@@ -33,6 +33,18 @@ class SongRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param Song $song Song to add
+     *
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function delete(Song $song): void
+    {
+        $this->_em->remove($song);
+        $this->_em->flush();
+    }
+
     // /**
     //  * @return Song[] Returns an array of Song objects
     //  */

@@ -9,6 +9,9 @@
                 <th>{{ 'song.title' | trans }}</th>
                 <th>{{ 'song.artist' | trans }}</th>
                 <th>{{ 'song.play' | trans }}</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                <th>X</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -22,6 +25,11 @@
                         Your browser does not support the audio element.
                     </audio>
                 </td>
+                {% if is_granted('ROLE_ADMIN') %}
+                <td>
+                    <a href="{{ path('song_delete', { 'id': song.id }) }}">X</a>
+                </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

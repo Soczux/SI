@@ -77,6 +77,30 @@ class AdminPanelController extends AbstractController
     }
 
     /**
+     * @Route("/song/{id}/delete/{action?none}", name="song_delete", requirements={"page"="\d+"})
+     */
+    public function songDelete(int $id, string $action, SongRepository $songRepository)
+    {
+        $song = $songRepository->find($id);
+
+        if ($action == 'confirm')
+        {
+            try {
+                $songRepository->delete($song);
+                $this->addFlash('success', 'message_deleted_successfully');
+            } catch (Exception $exception) {
+                $this->addFlash('error', $exception->getMessage());
+            }
+
+            return $this->redirectToRoute('songs');
+        }
+
+        return $this->render('song/delete.html.twig', [
+            'song' => $song,
+        ]);
+    }
+
+    /**
      * @Route("/album/add", name="admin_panel_album_add")
      */
     public function albumAdd(Request $request, AlbumRepository $albumRepository, LoggerInterface $logger): Response

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'pages.songs' | trans | capitalize }}{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>Czy na pewno chcesz usunąć piosenkę {{ song.title }}?</h1>
+        <a href="{{ path('song_delete', { 'id': song.id, 'action': 'confirm' }) }}">Potwierdź</a>
+        <a href="{{ path('songs') }}">Anuluj</a>
+    </div>
+{% endblock %}
