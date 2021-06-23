@@ -11,6 +11,7 @@ use App\Form\SongType;
 use App\Repository\AlbumRepository;
 use App\Repository\ArtistRepository;
 use App\Repository\SongRepository;
+use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -190,6 +191,30 @@ class AdminPanelController extends AbstractController
 
         return $this->render('admin_panel/artist/add.html.twig', [
             'add_artist_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/artist/{id}/delete/{action?none}", name="artist_delete", requirements={"page"="\d+"})
+     */
+    public function artistDelete(int $id, string $action, ArtistRepository $artistRepository)
+    {
+        $artist = $artistRepository->find($id);
+
+        if ($action == 'confirm')
+        {
+            try {
+                $artistRepository->delete($artist);
+                $this->addFlash('success', 'message_deleted_successfully');
+            } catch (Exception $exception) {
+                $this->addFlash('error', $exception->getCode());
+            }
+
+            return $this->redirectToRoute('artists');
+        }
+
+        return $this->render('artist/delete.html.twig', [
+            'artist' => $artist,
         ]);
     }
 }

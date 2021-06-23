@@ -33,6 +33,18 @@ class ArtistRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param Artist $artist Artist to delete
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Artist $artist): void
+    {
+        $this->_em->remove($artist);
+        $this->_em->flush();
+    }
+
     // /**
     //  * @return Artist[] Returns an array of Artist objects
     //  */

@@ -18,13 +18,21 @@
         <tr>
             <th>{{ 'artist.name' | trans }}</th>
             <th>{{ 'artist.country' | trans }}</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th>X</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
         {% for artist in artists %}
             <tr>
                 <td>{{ artist.name }}</td>
-                <td><img src="{{ asset('build/gfx/countries/' ~ artist.getCountry().getIso() | lower ~ '.png') }}" alt="{{ artist.getCountry().getIso() | lower }}"></td>
+                <td><img src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.iso | lower }}"></td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                        <a href="{{ path('artist_delete', { 'id': artist.id }) }}">X</a>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
