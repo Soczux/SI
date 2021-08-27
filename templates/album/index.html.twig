@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for album in albums %}
+        {% for album in pagination.items %}
             <tr>
                 <td>{{ album.name }}</td>
                 <td>{{ album.getArtist().getName() }}</td>

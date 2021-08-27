@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for song in songs %}
+        {% for song in pagination.items %}
             <tr>
                 <td>{{ song.title }}</td>
                 <td>{{ song.getArtist().getName() }}</td>

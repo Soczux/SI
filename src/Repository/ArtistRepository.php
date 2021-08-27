@@ -16,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArtistRepository extends ServiceEntityRepository
 {
+    const PAGINATOR_ITEMS_PER_PAGE = 15;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Artist::class);
@@ -27,7 +29,7 @@ class ArtistRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Artist $artist): void
+    public function save(Artist $artist): void
     {
         $this->_em->persist($artist);
         $this->_em->flush();
