@@ -78,7 +78,7 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/song/{id}/delete/{action?none}", name="song_delete", requirements={"page"="\d+"})
+     * @Route("/song/{id}/delete/{action?none}", name="song_delete", requirements={"id"="\d+"})
      */
     public function songDelete(int $id, string $action, SongRepository $songRepository)
     {
@@ -143,7 +143,7 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/album/{id}/delete/{action?none}", name="album_delete", requirements={"page"="\d+"})
+     * @Route("/album/{id}/delete/{action?none}", name="album_delete", requirements={"id"="\d+"})
      */
     public function albumDelete(int $id, string $action, AlbumRepository $albumRepository)
     {
@@ -195,7 +195,7 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/artist/{id}/delete/{action?none}", name="artist_delete", requirements={"page"="\d+"})
+     * @Route("/artist/{id}/delete/{action?none}", name="artist_delete", requirements={"id"="\d+"})
      */
     public function artistDelete(int $id, string $action, ArtistRepository $artistRepository)
     {
