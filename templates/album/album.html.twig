@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ album.name }} {% endblock %}
+
+{% block content %}
+    <img src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}">
+
+    {% if is_granted('ROLE_USER') %}
+        {{ form(commentForm) }}
+    {% endif %}
+
+    <div id="album_comments">
+        {% for comment in album.albumComments %}
+            <div class="album_comment">
+                <p>{{ comment.user.username }}</p>
+                <p>{{ comment.content }}</p>
+                <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

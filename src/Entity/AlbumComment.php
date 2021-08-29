@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AlbumCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=AlbumCommentRepository::class)
@@ -35,6 +36,8 @@ class AlbumComment
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="create")
      */
     private $commentedOn;
 
