@@ -10,6 +10,7 @@ use App\Form\ArtistType;
 use App\Form\SongType;
 use App\Service\AlbumService;
 use App\Service\ArtistService;
+use App\Service\FileUploader;
 use App\Service\SongService;
 use Doctrine\ORM\ORMException;
 use Exception;
@@ -40,7 +41,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/song/add", name="admin_panel_song_add", methods={"GET","POST"})
      */
-    public function songAdd(Request $request, SongService $songService, LoggerInterface $logger): Response
+    public function songAdd(Request $request, SongService $songService, LoggerInterface $logger, FileUploader $fileUploader): Response
     {
         $song = new Song();
 
@@ -49,23 +50,18 @@ class AdminPanelController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $song = $form->getData();
+
             $songFile = $form->get('url')->getData();
 
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $song->getTitle());
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
-
-            try {
-                $songFile->move($this->getParameter('audio_file_directory'), $newFilename);
-            } catch (FileException $exception) {
-                $logger->error('Cannot move file', [
-                    'exception' => $exception->getMessage(),
-                ]);
+            if ($songFile) {
+                $songFilename = $fileUploader->uploadSong($songFile);
+                $song->setUrl($songFilename);
             }
-
-            $song->setUrl($newFilename);
 
             try {
                 $songService->saveSong($song);
+
+                $this->redirectToRoute('admin_panel');
             } catch(Exception $exception) {
                 $logger->error('Cannot add song', [
                     'exception' => $exception->getMessage(),
@@ -149,7 +145,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/album/add", name="admin_panel_album_add", methods={"GET","POST"})
      */
-    public function albumAdd(Request $request, AlbumService $albumService, LoggerInterface $logger): Response
+    public function albumAdd(Request $request, AlbumService $albumService, LoggerInterface $logger, FileUploader $fileUploader): Response
     {
         $album = new Album();
 
@@ -158,23 +154,18 @@ class AdminPanelController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
+
             $coverFile = $form->get('logo')->getData();
 
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $album->getName());
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
-
-            try {
-                $coverFile->move($this->getParameter('covers_directory'), $newFilename);
-            } catch (FileException $exception) {
-                $logger->error('Cannot move file', [
-                    'exception' => $exception->getMessage(),
-                ]);
+            if ($coverFile) {
+                $coverFilename = $fileUploader->uploadAlbum($coverFile);
+                $album->setUrl($coverFilename);
             }
-
-            $album->setLogoUrl($newFilename);
 
             try {
                 $albumService->saveAlbum($album);
+
+                $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
                 $logger->error('Cannot add artist', [
                     'exception' => $exception->getMessage(),
@@ -270,6 +261,8 @@ class AdminPanelController extends AbstractController
 
             try {
                 $artistService->saveArtist($artist);
+
+                $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
                 $logger->error('Cannot add artist', [
                     'exception' => $exception->getMessage(),
