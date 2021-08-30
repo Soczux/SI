@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
-use App\Repository\ArtistRepository;
+use App\Entity\Artist;
+use App\Entity\ArtistComment;
+use App\Form\ArtistCommentType;
 use App\Service\ArtistService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArtistController extends AbstractController
 {
@@ -19,7 +22,10 @@ class ArtistController extends AbstractController
     }
 
     /**
-     * @Route("/artists", name="artists")
+     * @Route(
+     *     "/artists",
+     *     name="artists"
+     * )
      */
     public function index(Request $request): Response
     {
@@ -28,6 +34,33 @@ class ArtistController extends AbstractController
 
         return $this->render('artist/index.html.twig', [
             'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/artist/{id}",
+     *     name="artist",
+     *     methods={"GET","POST"},
+     *     requirements={"id": "\d+"}
+     * )
+     */
+    public function artist(Request $request, Artist $artist, UserInterface $user = null)
+    {
+        $artistComment = new ArtistComment();
+
+        $commentForm = $this->createForm(ArtistCommentType::class, $artistComment, ['method'=>"POST"]);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $this->artistService->addComment($artist, $artistComment, $user);
+
+            return $this->redirectToRoute('artist', ['id'=>$artist->getId()]);
+        }
+
+        return $this->render('artist/artist.html.twig', [
+            'artist' => $artist,
+            'commentForm' => $commentForm->createView(),
         ]);
     }
 }

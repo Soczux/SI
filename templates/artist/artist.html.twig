@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ artist.name }} {% endblock %}
+
+{% block content %}
+    <h2>{{ artist.name }}</h2>
+
+    {% if is_granted('ROLE_USER') %}
+        {{ form(commentForm) }}
+    {% endif %}
+
+    <div id="artist_comments">
+        {% for comment in artist.artistComments %}
+            <div class="artist_comment">
+                <p>{{ comment.user.username }}</p>
+                <p>{{ comment.content }}</p>
+                <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

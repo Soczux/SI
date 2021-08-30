@@ -41,7 +41,7 @@ class Artist
     private $albums;
 
     /**
-     * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="artist")
+     * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="artist", cascade={"persist"})
      */
     private $artistComments;
 
