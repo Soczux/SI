@@ -29,8 +29,11 @@ class ArtistController extends AbstractController
      */
     public function index(Request $request): Response
     {
+        $filters = [];
+        $filters['tag_id'] = $request->query->getInt('filters_tag_id');
+
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->artistService->createPaginatedList($page);
+        $pagination = $this->artistService->createPaginatedList($page, $filters);
 
         return $this->render('artist/index.html.twig', [
             'pagination' => $pagination,

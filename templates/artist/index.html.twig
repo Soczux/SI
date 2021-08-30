@@ -18,6 +18,7 @@
         <tr>
             <th>{{ 'artist.name' | trans }}</th>
             <th>{{ 'artist.country' | trans }}</th>
+            <th>{{ 'artist.tags' | trans }}</th>
             <th>{{ 'artist.more' | trans }}</th>
             {% if is_granted('ROLE_ADMIN') %}
                 <th>{{ 'artist.edit' }}</th>
@@ -30,6 +31,13 @@
             <tr>
                 <td>{{ artist.name }}</td>
                 <td><img src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.iso | lower }}"></td>
+                <td>
+                    {% if artist.tags is defined and artist.tags | length %}
+                        {% for tag in artist.tags %}
+                            <a href="{{ path('artists', { 'filters_tag_id': tag.id}) }}">{{ tag.name }}</a>
+                        {% endfor %}
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('artist', { 'id': artist.id }) }}">...</a>
                 </td>

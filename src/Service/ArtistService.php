@@ -42,10 +42,10 @@ class ArtistService
         $this->artistRepository->delete($artist);
     }
 
-    public function createPaginatedList(int $page): PaginationInterface
+    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->artistRepository->findAll(),
+            $this->artistRepository->queryAll($filters),
             $page,
             ArtistRepository::PAGINATOR_ITEMS_PER_PAGE
         );

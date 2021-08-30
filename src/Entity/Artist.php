@@ -50,12 +50,18 @@ class Artist
      */
     private $artistReactions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=ArtistTag::class, inversedBy="artists")
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
         $this->albums = new ArrayCollection();
         $this->artistComments = new ArrayCollection();
         $this->artistReactions = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,5 +216,29 @@ class Artist
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|ArtistTag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(ArtistTag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(ArtistTag $tag): self
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\Artist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,6 +46,32 @@ class ArtistRepository extends ServiceEntityRepository
     {
         $this->_em->remove($artist);
         $this->_em->flush();
+    }
+
+    public function queryAll(array $filters = []): QueryBuilder
+    {
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial artist.{id,name}',
+                'partial tags.{id,name}'
+            )
+            ->leftJoin('artist.tags', 'tags')
+            ->addOrderBy('artist.name', 'ASC')
+        ;
+
+        if (array_key_exists('tag_id', $filters) && $filters['tag_id'] > 0) {
+            $queryBuilder
+                ->andWhere('tags IN (:tag_id)')
+                ->setParameter('tag_id', $filters['tag_id'])
+            ;
+        }
+
+        return $queryBuilder;
+    }
+
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?? $this->createQueryBuilder('artist');
     }
 
     // /**
