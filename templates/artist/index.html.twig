@@ -20,7 +20,8 @@
             <th>{{ 'artist.country' | trans }}</th>
             <th>{{ 'artist.more' | trans }}</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th>X</th>
+                <th>{{ 'artist.edit' }}</th>
+                <th>{{ 'artist.delete' }}</th>
             {% endif %}
         </tr>
         </thead>
@@ -34,7 +35,10 @@
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        <a href="{{ path('artist_delete', { 'id': artist.id }) }}">X</a>
+                        <a href="{{ path('admin_panel_artist_edit', { 'id': artist.id }) }}">E</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_panel_artist_delete', { 'id': artist.id }) }}">X</a>
                     </td>
                 {% endif %}
             </tr>

@@ -33,6 +33,15 @@ class ArtistService
         $this->artistRepository->save($artist);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function deleteArtist(Artist $artist)
+    {
+        $this->artistRepository->delete($artist);
+    }
+
     public function createPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(

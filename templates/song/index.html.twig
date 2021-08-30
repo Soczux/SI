@@ -11,7 +11,8 @@
                 <th>{{ 'song.play' | trans }}</th>
                 <th>{{ 'song.more' | trans }}</th>
                 {% if is_granted('ROLE_ADMIN') %}
-                <th>X</th>
+                    <th>{{ 'song.edit' | trans }}</th>
+                    <th>{{ 'song.delete' | trans }}</th>
                 {% endif %}
             </tr>
         </thead>
@@ -30,9 +31,12 @@
                     <a href="{{ path('song', { 'id': song.id }) }}">...</a>
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
-                <td>
-                    <a href="{{ path('song_delete', { 'id': song.id }) }}">X</a>
-                </td>
+                    <td>
+                        <a href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}">E</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}">X</a>
+                    </td>
                 {% endif %}
             </tr>
         {% endfor %}

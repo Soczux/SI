@@ -32,6 +32,15 @@ class AlbumService
         $this->albumRepository->save($album);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function deleteAlbum(Album $album)
+    {
+        $this->albumRepository->delete($album);
+    }
+
     public function createPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(

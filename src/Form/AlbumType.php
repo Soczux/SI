@@ -33,7 +33,7 @@ class AlbumType extends AbstractType
                 ],
             ])
             ->add('artist')
-            ->add('dodaj', SubmitType::class)
+            ->add('save', SubmitType::class)
         ;
     }
 

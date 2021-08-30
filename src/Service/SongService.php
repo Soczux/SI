@@ -30,6 +30,15 @@ class SongService
         $this->songRepository->save($song);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function deleteSong(Song $song)
+    {
+        $this->songRepository->delete($song);
+    }
+
     public function createPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(

@@ -19,7 +19,7 @@ class ArtistType extends AbstractType
             ->add('country', EntityType::class, [
                 'class' => Country::class,
             ])
-            ->add('dodaj', SubmitType::class)
+            ->add('save', SubmitType::class)
         ;
     }
 

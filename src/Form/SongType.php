@@ -34,7 +34,7 @@ class SongType extends AbstractType
             ->add('artist', EntityType::class, [
                 'class' => Artist::class,
             ])
-            ->add('add', SubmitType::class)
+            ->add('save', SubmitType::class)
         ;
     }
 

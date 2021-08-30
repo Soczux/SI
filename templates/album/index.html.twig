@@ -21,7 +21,8 @@
             <th>{{ 'album.cover' | trans }}</th>
             <th>{{ 'album.more' | trans }}</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th>X</th>
+                <th>{{ 'album.edit' | trans }}</th>
+                <th>{{ 'album.delete' | trans }}</th>
             {% endif %}
         </tr>
         </thead>
@@ -36,7 +37,10 @@
                 </td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                        <a href="{{ path('album_delete', { 'id': album.id }) }}">X</a>
+                        <a href="{{ path('admin_panel_album_edit', { 'id': album.id }) }}">E</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_panel_album_delete', { 'id': album.id }) }}">X</a>
                     </td>
                 {% endif %}
             </tr>

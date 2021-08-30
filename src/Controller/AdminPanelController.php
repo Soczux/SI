@@ -8,14 +8,15 @@ use App\Entity\Song;
 use App\Form\AlbumType;
 use App\Form\ArtistType;
 use App\Form\SongType;
-use App\Repository\AlbumRepository;
-use App\Repository\ArtistRepository;
-use App\Repository\SongRepository;
+use App\Service\AlbumService;
+use App\Service\ArtistService;
+use App\Service\SongService;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,9 +38,9 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/song/add", name="admin_panel_song_add")
+     * @Route("/song/add", name="admin_panel_song_add", methods={"GET","POST"})
      */
-    public function songAdd(Request $request, SongRepository $songRepository, LoggerInterface $logger): Response
+    public function songAdd(Request $request, SongService $songService, LoggerInterface $logger): Response
     {
         $song = new Song();
 
@@ -64,7 +65,7 @@ class AdminPanelController extends AbstractController
             $song->setUrl($newFilename);
 
             try {
-                $songRepository->add($song);
+                $songService->saveSong($song);
             } catch(Exception $exception) {
                 $logger->error('Cannot add song', [
                     'exception' => $exception->getMessage(),
@@ -78,16 +79,14 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/song/{id}/delete/{action?none}", name="song_delete", requirements={"id"="\d+"})
+     * @Route("/song/{id}/delete/{action?none}", name="admin_panel_song_delete", requirements={"id"="\d+"})
      */
-    public function songDelete(int $id, string $action, SongRepository $songRepository)
+    public function songDelete(Song $song, string $action, SongService $songService)
     {
-        $song = $songRepository->find($id);
-
-        if ($action == 'confirm')
+        if ('confirm' === $action)
         {
             try {
-                $songRepository->delete($song);
+                $songService->deleteSong($song);
                 $this->addFlash('success', 'message_deleted_successfully');
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getMessage());
@@ -102,9 +101,55 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/album/add", name="admin_panel_album_add")
+     * @Route(
+     *     "/song/{id}/edit",
+     *     name="admin_panel_song_edit",
+     *     requirements={"id": "\d+"},
+     *     methods={"GET","PUT"}
+     * )
      */
-    public function albumAdd(Request $request, AlbumRepository $albumRepository, LoggerInterface $logger): Response
+    public function songEdit(Request $request, Song $song, SongService $songService, LoggerInterface $logger): Response
+    {
+        $form = $this->createForm(SongType::class, $song, ['method' => 'PUT']);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $song = $form->getData();
+            $songFile = $form->get('url')->getData();
+
+            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $song->getTitle());
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
+
+            try {
+                $songFile->move($this->getParameter('audio_file_directory'), $newFilename);
+            } catch (FileException $exception) {
+                $logger->error('Cannot move file', [
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+
+            $song->setUrl($newFilename);
+
+            try {
+                $songService->saveSong($song);
+
+                return $this->redirectToRoute('songs');
+            } catch(Exception $exception) {
+                $logger->error('Cannot add song', [
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        return $this->render('admin_panel/song/add.html.twig', [
+            'song_add_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/album/add", name="admin_panel_album_add", methods={"GET","POST"})
+     */
+    public function albumAdd(Request $request, AlbumService $albumService, LoggerInterface $logger): Response
     {
         $album = new Album();
 
@@ -129,7 +174,7 @@ class AdminPanelController extends AbstractController
             $album->setLogoUrl($newFilename);
 
             try {
-                $albumRepository->add($album);
+                $albumService->saveAlbum($album);
             } catch (Exception $exception) {
                 $logger->error('Cannot add artist', [
                     'exception' => $exception->getMessage(),
@@ -143,16 +188,14 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/album/{id}/delete/{action?none}", name="album_delete", requirements={"id"="\d+"})
+     * @Route("/album/{id}/delete/{action?none}", name="admin_panel_album_delete", requirements={"id"="\d+"})
      */
-    public function albumDelete(int $id, string $action, AlbumRepository $albumRepository)
+    public function albumDelete(Album $album, string $action, AlbumService $albumService)
     {
-        $album = $albumRepository->find($id);
-
-        if ($action == 'confirm')
+        if ('confirm' === $action)
         {
             try {
-                $albumRepository->delete($album);
+                $albumService->deleteAlbum($album);
                 $this->addFlash('success', 'message_deleted_successfully');
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getMessage());
@@ -167,9 +210,55 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/artist/add", name="admin_panel_artist_add")
+     * @Route(
+     *     "/album/{id}/edit",
+     *     name="admin_panel_album_edit",
+     *     requirements={"id": "\d+"},
+     *     methods={"GET","PUT"}
+     * )
      */
-    public function artistAdd(Request $request, ArtistRepository $artistRepository, LoggerInterface $logger): Response
+    public function albumEdit(Request $request, Album $album, AlbumService $albumService, LoggerInterface $logger): Response
+    {
+        $form = $this->createForm(AlbumType::class, $album, ['method'=>'PUT']);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $album = $form->getData();
+            $coverFile = $form->get('logo')->getData();
+
+            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $album->getName());
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
+
+            try {
+                $coverFile->move($this->getParameter('covers_directory'), $newFilename);
+            } catch (FileException $exception) {
+                $logger->error('Cannot move file', [
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+
+            $album->setLogoUrl($newFilename);
+
+            try {
+                $albumService->saveAlbum($album);
+
+                return $this->redirectToRoute('albums');
+            } catch (Exception $exception) {
+                $logger->error('Cannot add artist', [
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        return $this->render('admin_panel/album/add.html.twig', [
+            'album_add_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/artist/add", name="admin_panel_artist_add", methods={"GET","POST"})
+     */
+    public function artistAdd(Request $request, ArtistService $artistService, LoggerInterface $logger): Response
     {
         $artist = new Artist();
 
@@ -180,7 +269,7 @@ class AdminPanelController extends AbstractController
             $artist = $form->getData();
 
             try {
-                $artistRepository->add($artist);
+                $artistService->saveArtist($artist);
             } catch (Exception $exception) {
                 $logger->error('Cannot add artist', [
                     'exception' => $exception->getMessage(),
@@ -195,16 +284,14 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/artist/{id}/delete/{action?none}", name="artist_delete", requirements={"id"="\d+"})
+     * @Route("/artist/{id}/delete/{action?none}", name="admin_panel_artist_delete", requirements={"id"="\d+"})
      */
-    public function artistDelete(int $id, string $action, ArtistRepository $artistRepository)
+    public function artistDelete(Artist $artist, string $action, ArtistService $artistService)
     {
-        $artist = $artistRepository->find($id);
-
-        if ($action == 'confirm')
+        if ('confirm' === $action)
         {
             try {
-                $artistRepository->delete($artist);
+                $artistService->deleteArtist($artist);
                 $this->addFlash('success', 'message_deleted_successfully');
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getCode());
@@ -215,6 +302,39 @@ class AdminPanelController extends AbstractController
 
         return $this->render('artist/delete.html.twig', [
             'artist' => $artist,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/artist/{id}/edit",
+     *     name="admin_panel_artist_edit",
+     *     requirements={"id": "\d+"},
+     *     methods={"GET","PUT"}
+     * )
+     */
+    public function artistEdit(Request $request, Artist $artist, ArtistService $artistService, LoggerInterface $logger): Response
+    {
+        $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $artist = $form->getData();
+
+            try {
+                $artistService->saveArtist($artist);
+
+                return $this->redirectToRoute('artists');
+            } catch (Exception $exception) {
+                $logger->error('Cannot add artist', [
+                        'exception' => $exception->getMessage(),
+                    ]
+                );
+            }
+        }
+
+        return $this->render('admin_panel/artist/add.html.twig', [
+            'add_artist_form' => $form->createView(),
         ]);
     }
 }
