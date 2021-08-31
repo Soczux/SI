@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210506140642 extends AbstractMigration
+final class Version20210909132824 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,9 +24,11 @@ final class Version20210506140642 extends AbstractMigration
         $this->addSql('CREATE TABLE album_comment (id INT AUTO_INCREMENT NOT NULL, album_id INT NOT NULL, user_id INT DEFAULT NULL, content VARCHAR(1000) NOT NULL, commented_on DATETIME NOT NULL, INDEX IDX_C1A30F7E1137ABCF (album_id), INDEX IDX_C1A30F7EA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE album_reaction (album_id INT NOT NULL, user_id INT NOT NULL, reaction_id INT NOT NULL, INDEX IDX_573BA1E21137ABCF (album_id), INDEX IDX_573BA1E2A76ED395 (user_id), INDEX IDX_573BA1E2813C7171 (reaction_id), PRIMARY KEY(album_id, user_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE artist (id INT AUTO_INCREMENT NOT NULL, country_id INT NOT NULL, name VARCHAR(100) NOT NULL, INDEX IDX_1599687F92F3E70 (country_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE artist_artist_tag (artist_id INT NOT NULL, artist_tag_id INT NOT NULL, INDEX IDX_38F3ED4BB7970CF8 (artist_id), INDEX IDX_38F3ED4B48D06F6F (artist_tag_id), PRIMARY KEY(artist_id, artist_tag_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE artist_comment (id INT AUTO_INCREMENT NOT NULL, artist_id INT NOT NULL, user_id INT DEFAULT NULL, content VARCHAR(1000) NOT NULL, commented_on DATETIME NOT NULL, INDEX IDX_233B0C5BB7970CF8 (artist_id), INDEX IDX_233B0C5BA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE artist_reaction (artist_id INT NOT NULL, user_id INT NOT NULL, reaction_id INT NOT NULL, INDEX IDX_1CDDEDA6B7970CF8 (artist_id), INDEX IDX_1CDDEDA6A76ED395 (user_id), INDEX IDX_1CDDEDA6813C7171 (reaction_id), PRIMARY KEY(artist_id, user_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(80) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE artist_tag (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(64) NOT NULL, created_on DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(80) NOT NULL, iso VARCHAR(2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE playlist (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(100) NOT NULL, INDEX IDX_D782112DA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE playlist_song (playlist_id INT NOT NULL, song_id INT NOT NULL, INDEX IDX_93F4D9C36BBD148 (playlist_id), INDEX IDX_93F4D9C3A0BDB2F3 (song_id), PRIMARY KEY(playlist_id, song_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reaction (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -41,6 +43,8 @@ final class Version20210506140642 extends AbstractMigration
         $this->addSql('ALTER TABLE album_reaction ADD CONSTRAINT FK_573BA1E2A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE album_reaction ADD CONSTRAINT FK_573BA1E2813C7171 FOREIGN KEY (reaction_id) REFERENCES reaction (id)');
         $this->addSql('ALTER TABLE artist ADD CONSTRAINT FK_1599687F92F3E70 FOREIGN KEY (country_id) REFERENCES country (id)');
+        $this->addSql('ALTER TABLE artist_artist_tag ADD CONSTRAINT FK_38F3ED4BB7970CF8 FOREIGN KEY (artist_id) REFERENCES artist (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE artist_artist_tag ADD CONSTRAINT FK_38F3ED4B48D06F6F FOREIGN KEY (artist_tag_id) REFERENCES artist_tag (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE artist_comment ADD CONSTRAINT FK_233B0C5BB7970CF8 FOREIGN KEY (artist_id) REFERENCES artist (id)');
         $this->addSql('ALTER TABLE artist_comment ADD CONSTRAINT FK_233B0C5BA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE artist_reaction ADD CONSTRAINT FK_1CDDEDA6B7970CF8 FOREIGN KEY (artist_id) REFERENCES artist (id)');
@@ -64,9 +68,11 @@ final class Version20210506140642 extends AbstractMigration
         $this->addSql('ALTER TABLE album_comment DROP FOREIGN KEY FK_C1A30F7E1137ABCF');
         $this->addSql('ALTER TABLE album_reaction DROP FOREIGN KEY FK_573BA1E21137ABCF');
         $this->addSql('ALTER TABLE album DROP FOREIGN KEY FK_39986E43B7970CF8');
+        $this->addSql('ALTER TABLE artist_artist_tag DROP FOREIGN KEY FK_38F3ED4BB7970CF8');
         $this->addSql('ALTER TABLE artist_comment DROP FOREIGN KEY FK_233B0C5BB7970CF8');
         $this->addSql('ALTER TABLE artist_reaction DROP FOREIGN KEY FK_1CDDEDA6B7970CF8');
         $this->addSql('ALTER TABLE song DROP FOREIGN KEY FK_33EDEEA1B7970CF8');
+        $this->addSql('ALTER TABLE artist_artist_tag DROP FOREIGN KEY FK_38F3ED4B48D06F6F');
         $this->addSql('ALTER TABLE artist DROP FOREIGN KEY FK_1599687F92F3E70');
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649F92F3E70');
         $this->addSql('ALTER TABLE playlist_song DROP FOREIGN KEY FK_93F4D9C36BBD148');
@@ -87,8 +93,10 @@ final class Version20210506140642 extends AbstractMigration
         $this->addSql('DROP TABLE album_comment');
         $this->addSql('DROP TABLE album_reaction');
         $this->addSql('DROP TABLE artist');
+        $this->addSql('DROP TABLE artist_artist_tag');
         $this->addSql('DROP TABLE artist_comment');
         $this->addSql('DROP TABLE artist_reaction');
+        $this->addSql('DROP TABLE artist_tag');
         $this->addSql('DROP TABLE country');
         $this->addSql('DROP TABLE playlist');
         $this->addSql('DROP TABLE playlist_song');
