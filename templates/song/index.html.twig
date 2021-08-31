@@ -20,7 +20,9 @@
         {% for song in pagination.items %}
             <tr>
                 <td>{{ song.title }}</td>
-                <td>{{ song.artist.name }}</td>
+                <td>
+                    <a href="{{ path('songs', { 'filters_artist_id': song.artist.id }) }}">{{ song.artist.name }}</a>
+                </td>
                 <td>
                     <audio controls>
                         <source src="{{ asset('audio/songs/' ~ song.url) }}">

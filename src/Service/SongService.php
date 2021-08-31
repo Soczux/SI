@@ -39,10 +39,10 @@ class SongService
         $this->songRepository->delete($song);
     }
 
-    public function createPaginatedList(int $page): PaginationInterface
+    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->songRepository->findAll(),
+            $this->songRepository->queryAll($filters),
             $page,
             SongRepository::PAGINATOR_ITEMS_PER_PAGE
         );

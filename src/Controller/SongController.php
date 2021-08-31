@@ -30,8 +30,11 @@ class SongController extends AbstractController
      */
     public function index(Request $request): Response
     {
+        $filters = [];
+        $filters['artist_id'] = $request->query->getInt('filters_artist_id');
+
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->songService->createPaginatedList($page);
+        $pagination = $this->songService->createPaginatedList($page, $filters);
 
         return $this->render('song/index.html.twig', [
             'pagination' => $pagination,
