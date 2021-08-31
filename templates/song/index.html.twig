@@ -3,45 +3,55 @@
 {% block title %}{{ 'pages.songs' | trans | capitalize }}{% endblock %}
 
 {% block content %}
-    <table id="songs-table">
-        <thead>
-            <tr>
-                <th>{{ 'song.title' | trans }}</th>
-                <th>{{ 'song.artist' | trans }}</th>
-                <th>{{ 'song.play' | trans }}</th>
-                <th>{{ 'song.more' | trans }}</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th>{{ 'song.edit' | trans }}</th>
-                    <th>{{ 'song.delete' | trans }}</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for song in pagination.items %}
-            <tr>
-                <td>{{ song.title }}</td>
-                <td>
-                    <a href="{{ path('songs', { 'filters_artist_id': song.artist.id }) }}">{{ song.artist.name }}</a>
-                </td>
-                <td>
-                    <audio controls>
-                        <source src="{{ asset('audio/songs/' ~ song.url) }}">
-                        Your browser does not support the audio element.
-                    </audio>
-                </td>
-                <td>
-                    <a href="{{ path('song', { 'id': song.id }) }}">...</a>
-                </td>
-                {% if is_granted('ROLE_ADMIN') %}
+    {% if pagination is defined and pagination.items | length %}
+        <div class="pagination_navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table id="songs-table">
+            <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(pagination, 'song.title' | trans, 'song.title') }}</th>
+                    <th>{{ 'song.artist' | trans }}</th>
+                    <th>{{ 'song.play' | trans }}</th>
+                    <th>{{ 'song.more' | trans }}</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th>{{ 'song.edit' | trans }}</th>
+                        <th>{{ 'song.delete' | trans }}</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for song in pagination.items %}
+                <tr>
+                    <td>{{ song.title }}</td>
                     <td>
-                        <a href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}">E</a>
+                        <a href="{{ path('songs', { 'filters_artist_id': song.artist.id }) }}">{{ song.artist.name }}</a>
                     </td>
                     <td>
-                        <a href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}">X</a>
+                        <audio controls>
+                            <source src="{{ asset('audio/songs/' ~ song.url) }}">
+                            Your browser does not support the audio element.
+                        </audio>
                     </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                    <td>
+                        <a href="{{ path('song', { 'id': song.id }) }}">...</a>
+                    </td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}">E</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}">X</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination_navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% endif %}
 {% endblock %}

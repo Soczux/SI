@@ -56,8 +56,6 @@ class SongRepository extends ServiceEntityRepository
                 'partial artist.{id, name}'
             )
             ->leftJoin('song.artist', 'artist')
-            ->addOrderBy('artist.name', 'ASC')
-            ->addOrderBy('song.title', 'ASC')
         ;
 
         if (array_key_exists('artist_id', $filters) && $filters['artist_id'] > 0) {

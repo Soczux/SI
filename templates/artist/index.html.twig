@@ -13,44 +13,54 @@
 {% block title %}Hello ArtistController!{% endblock %}
 
 {% block content %}
-    <table id="artists-table">
-        <thead>
-        <tr>
-            <th>{{ 'artist.name' | trans }}</th>
-            <th>{{ 'artist.country' | trans }}</th>
-            <th>{{ 'artist.tags' | trans }}</th>
-            <th>{{ 'artist.more' | trans }}</th>
-            {% if is_granted('ROLE_ADMIN') %}
-                <th>{{ 'artist.edit' }}</th>
-                <th>{{ 'artist.delete' }}</th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for artist in pagination.items %}
+    {% if pagination is defined and pagination.items | length %}
+        <div class="pagination_navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table id="artists-table">
+            <thead>
             <tr>
-                <td>{{ artist.name }}</td>
-                <td><img src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.iso | lower }}"></td>
-                <td>
-                    {% if artist.tags is defined and artist.tags | length %}
-                        {% for tag in artist.tags %}
-                            <a href="{{ path('artists', { 'filters_tag_id': tag.id}) }}">{{ tag.name }}</a>
-                        {% endfor %}
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('artist', { 'id': artist.id }) }}">...</a>
-                </td>
+                <th>{{ knp_pagination_sortable(pagination, 'artist.name' | trans, 'artist.name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'artist.country' | trans, 'country.name') }}</th>
+                <th>{{ 'artist.tags' | trans }}</th>
+                <th>{{ 'artist.more' | trans }}</th>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <td>
-                        <a href="{{ path('admin_panel_artist_edit', { 'id': artist.id }) }}">E</a>
-                    </td>
-                    <td>
-                        <a href="{{ path('admin_panel_artist_delete', { 'id': artist.id }) }}">X</a>
-                    </td>
+                    <th>{{ 'artist.edit' }}</th>
+                    <th>{{ 'artist.delete' }}</th>
                 {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for artist in pagination.items %}
+                <tr>
+                    <td>{{ artist.name }}</td>
+                    <td><img src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.iso | lower }}"></td>
+                    <td>
+                        {% if artist.tags is defined and artist.tags | length %}
+                            {% for tag in artist.tags %}
+                                <a href="{{ path('artists', { 'filters_tag_id': tag.id}) }}">{{ tag.name }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('artist', { 'id': artist.id }) }}">...</a>
+                    </td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('admin_panel_artist_edit', { 'id': artist.id }) }}">E</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('admin_panel_artist_delete', { 'id': artist.id }) }}">X</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination_navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% endif %}
 {% endblock %}
