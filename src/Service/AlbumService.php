@@ -41,10 +41,10 @@ class AlbumService
         $this->albumRepository->delete($album);
     }
 
-    public function createPaginatedList(int $page): PaginationInterface
+    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->albumRepository->findAll(),
+            $this->albumRepository->queryAll($filters),
             $page,
             AlbumRepository::PAGINATOR_ITEMS_PER_PAGE
         );

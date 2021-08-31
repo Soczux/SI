@@ -30,8 +30,11 @@ class AlbumController extends AbstractController
      */
     public function index(Request $request): Response
     {
+        $filters = [];
+        $filters['artist_id'] = $request->query->getInt('filters_artist_id');
+
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->albumService->createPaginatedList($page);
+        $pagination = $this->albumService->createPaginatedList($page, $filters);
 
         return $this->render('album/index.html.twig', [
             'pagination' => $pagination,

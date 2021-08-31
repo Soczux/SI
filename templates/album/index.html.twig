@@ -30,7 +30,9 @@
         {% for album in pagination.items %}
             <tr>
                 <td>{{ album.name }}</td>
-                <td>{{ album.artist.name }}</td>
+                <td>
+                    <a href="{{ path('albums', {'filters_artist_id': album.artist.id }) }}">{{ album.artist.name }}</a>
+                </td>
                 <td><img src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}"></td>
                 <td>
                     <a href="{{ path('album', { 'id': album.id }) }}">...</a>

@@ -3,10 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Album;
-use App\Entity\Artist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -46,6 +46,33 @@ class AlbumRepository extends ServiceEntityRepository
     {
         $this->_em->remove($album);
         $this->_em->flush();
+    }
+
+    public function queryAll(array $filters = []): QueryBuilder
+    {
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial album.{id,name,logo_url}',
+                'partial artist.{id,name}'
+            )
+            ->leftJoin('album.artist', 'artist')
+            ->addOrderBy('artist.name', 'ASC')
+            ->addOrderBy('album.name', 'ASC')
+        ;
+
+        if (array_key_exists('artist_id', $filters) && $filters['artist_id'] > 0) {
+            $queryBuilder
+                ->andWhere('artist IN (:artist_id)')
+                ->setParameter('artist_id', $filters['artist_id'])
+            ;
+        }
+
+        return $queryBuilder;
+    }
+
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?? $this->createQueryBuilder('album');
     }
 
     // /**
