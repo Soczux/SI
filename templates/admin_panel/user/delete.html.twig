@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'pages.users' | trans | capitalize }}{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>Czy na pewno chcesz usunąć użytkownika {{ user.username }}?</h1>
+        <a href="{{ path('admin_panel_user_delete', { 'id': user.id, 'action': 'confirm' }) }}">Potwierdź</a>
+        <a href="{{ path('admin_panel_user_list') }}">Anuluj</a>
+    </div>
+{% endblock %}

@@ -12,7 +12,7 @@
     <div id="album_comments">
         {% for comment in album.albumComments %}
             <div class="album_comment">
-                <p>{{ comment.user.username }}</p>
+                <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
                 <p>{{ comment.content }}</p>
                 <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
             </div>

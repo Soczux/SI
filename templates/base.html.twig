@@ -37,7 +37,7 @@
                         {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('admin_panel') }}">Admin panel</a>
                         {% endif %}
-                        <a href="{{ path('account') }}">Moje konto</a>
+                        <a href="{{ path('user', {'id': app.user.id}) }}">Moje konto</a>
                         <a href="{{ path('logout') }}">Wyloguj się</a>
                     </div>
                     {% endblock %}

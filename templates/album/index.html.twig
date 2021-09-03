@@ -24,11 +24,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'album.title' | trans, 'album.title') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'album.artist' | trans, 'artist.name') }}</th>
                 <th>{{ 'album.cover' | trans }}</th>
-                <th>{{ 'album.more' | trans }}</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th>{{ 'album.edit' | trans }}</th>
-                    <th>{{ 'album.delete' | trans }}</th>
-                {% endif %}
+                <th>{{ 'actions.label' }}</th>
             </tr>
             </thead>
             <tbody>
@@ -40,16 +36,12 @@
                     </td>
                     <td><img src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}"></td>
                     <td>
-                        <a href="{{ path('album', { 'id': album.id }) }}">...</a>
-                    </td>
+                        <a href="{{ path('album', { 'id': album.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <td>
-                            <a href="{{ path('admin_panel_album_edit', { 'id': album.id }) }}">E</a>
-                        </td>
-                        <td>
-                            <a href="{{ path('admin_panel_album_delete', { 'id': album.id }) }}">X</a>
-                        </td>
+                        <a href="{{ path('admin_panel_album_edit', { 'id': album.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                        <a href="{{ path('admin_panel_album_delete', { 'id': album.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
                     {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

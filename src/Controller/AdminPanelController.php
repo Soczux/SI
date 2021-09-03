@@ -5,13 +5,16 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Song;
+use App\Entity\User;
 use App\Form\AlbumType;
 use App\Form\ArtistType;
 use App\Form\SongType;
+use App\Form\UserType;
 use App\Service\AlbumService;
 use App\Service\ArtistService;
 use App\Service\FileUploader;
 use App\Service\SongService;
+use App\Service\UserService;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -30,6 +33,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class AdminPanelController extends AbstractController
 {
+    private AlbumService $albumService;
+    private ArtistService $artistService;
+    private FileUploader $fileUploader;
+    private SongService $songService;
+    private UserService $userService;
+
+    public function __construct(AlbumService $albumService, ArtistService $artistService, FileUploader $fileUploader, SongService $songService, UserService $userService)
+    {
+        $this->albumService = $albumService;
+        $this->artistService = $artistService;
+        $this->fileUploader = $fileUploader;
+        $this->songService = $songService;
+        $this->userService = $userService;
+    }
+
     /**
      * @Route("/", name="admin_panel")
      */
@@ -41,7 +59,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/song/add", name="admin_panel_song_add", methods={"GET","POST"})
      */
-    public function songAdd(Request $request, SongService $songService, LoggerInterface $logger, FileUploader $fileUploader): Response
+    public function songAdd(Request $request, LoggerInterface $logger): Response
     {
         $song = new Song();
 
@@ -54,12 +72,12 @@ class AdminPanelController extends AbstractController
             $songFile = $form->get('url')->getData();
 
             if ($songFile) {
-                $songFilename = $fileUploader->uploadSong($songFile);
+                $songFilename = $this->fileUploader->uploadSong($songFile);
                 $song->setUrl($songFilename);
             }
 
             try {
-                $songService->saveSong($song);
+                $this->songService->saveSong($song);
 
                 $this->redirectToRoute('admin_panel');
             } catch(Exception $exception) {
@@ -77,12 +95,12 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/song/{id}/delete/{action?none}", name="admin_panel_song_delete", requirements={"id"="\d+"})
      */
-    public function songDelete(Song $song, string $action, SongService $songService)
+    public function songDelete(Song $song, string $action)
     {
         if ('confirm' === $action)
         {
             try {
-                $songService->deleteSong($song);
+                $this->songService->deleteSong($song);
                 $this->addFlash('success', 'message_deleted_successfully');
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getMessage());
@@ -91,7 +109,7 @@ class AdminPanelController extends AbstractController
             return $this->redirectToRoute('songs');
         }
 
-        return $this->render('song/delete.html.twig', [
+        return $this->render('admin_panel/song/delete.html.twig', [
             'song' => $song,
         ]);
     }
@@ -104,7 +122,7 @@ class AdminPanelController extends AbstractController
      *     methods={"GET","PUT"}
      * )
      */
-    public function songEdit(Request $request, Song $song, SongService $songService, LoggerInterface $logger): Response
+    public function songEdit(Request $request, Song $song, LoggerInterface $logger): Response
     {
         $form = $this->createForm(SongType::class, $song, ['method' => 'PUT']);
 
@@ -127,7 +145,7 @@ class AdminPanelController extends AbstractController
             $song->setUrl($newFilename);
 
             try {
-                $songService->saveSong($song);
+                $this->songService->saveSong($song);
 
                 return $this->redirectToRoute('songs');
             } catch(Exception $exception) {
@@ -145,7 +163,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/album/add", name="admin_panel_album_add", methods={"GET","POST"})
      */
-    public function albumAdd(Request $request, AlbumService $albumService, LoggerInterface $logger, FileUploader $fileUploader): Response
+    public function albumAdd(Request $request, LoggerInterface $logger): Response
     {
         $album = new Album();
 
@@ -158,12 +176,12 @@ class AdminPanelController extends AbstractController
             $coverFile = $form->get('logo')->getData();
 
             if ($coverFile) {
-                $coverFilename = $fileUploader->uploadAlbum($coverFile);
+                $coverFilename = $this->fileUploader->uploadAlbum($coverFile);
                 $album->setUrl($coverFilename);
             }
 
             try {
-                $albumService->saveAlbum($album);
+                $this->albumService->saveAlbum($album);
 
                 $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
@@ -181,12 +199,12 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/album/{id}/delete/{action?none}", name="admin_panel_album_delete", requirements={"id"="\d+"})
      */
-    public function albumDelete(Album $album, string $action, AlbumService $albumService)
+    public function albumDelete(Album $album, string $action)
     {
         if ('confirm' === $action)
         {
             try {
-                $albumService->deleteAlbum($album);
+                $this->albumService->deleteAlbum($album);
                 $this->addFlash('success', 'message_deleted_successfully');
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getMessage());
@@ -195,7 +213,7 @@ class AdminPanelController extends AbstractController
             return $this->redirectToRoute('albums');
         }
 
-        return $this->render('album/delete.html.twig', [
+        return $this->render('admin_panel/album/delete.html.twig', [
             'album' => $album,
         ]);
     }
@@ -208,7 +226,7 @@ class AdminPanelController extends AbstractController
      *     methods={"GET","PUT"}
      * )
      */
-    public function albumEdit(Request $request, Album $album, AlbumService $albumService, LoggerInterface $logger): Response
+    public function albumEdit(Request $request, Album $album, LoggerInterface $logger): Response
     {
         $form = $this->createForm(AlbumType::class, $album, ['method'=>'PUT']);
 
@@ -231,7 +249,7 @@ class AdminPanelController extends AbstractController
             $album->setLogoUrl($newFilename);
 
             try {
-                $albumService->saveAlbum($album);
+                $this->albumService->saveAlbum($album);
 
                 return $this->redirectToRoute('albums');
             } catch (Exception $exception) {
@@ -249,7 +267,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/artist/add", name="admin_panel_artist_add", methods={"GET","POST"})
      */
-    public function artistAdd(Request $request, ArtistService $artistService, LoggerInterface $logger): Response
+    public function artistAdd(Request $request, LoggerInterface $logger): Response
     {
         $artist = new Artist();
 
@@ -260,7 +278,7 @@ class AdminPanelController extends AbstractController
             $artist = $form->getData();
 
             try {
-                $artistService->saveArtist($artist);
+                $this->artistService->saveArtist($artist);
 
                 $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
@@ -279,12 +297,12 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/artist/{id}/delete/{action?none}", name="admin_panel_artist_delete", requirements={"id"="\d+"})
      */
-    public function artistDelete(Artist $artist, string $action, ArtistService $artistService)
+    public function artistDelete(Artist $artist, string $action)
     {
         if ('confirm' === $action)
         {
             try {
-                $artistService->deleteArtist($artist);
+                $this->artistService->deleteArtist($artist);
                 $this->addFlash('success', 'message_deleted_successfully');
             } catch (Exception $exception) {
                 $this->addFlash('error', $exception->getCode());
@@ -293,7 +311,7 @@ class AdminPanelController extends AbstractController
             return $this->redirectToRoute('artists');
         }
 
-        return $this->render('artist/delete.html.twig', [
+        return $this->render('admin_panel/artist/delete.html.twig', [
             'artist' => $artist,
         ]);
     }
@@ -306,7 +324,7 @@ class AdminPanelController extends AbstractController
      *     methods={"GET","PUT"}
      * )
      */
-    public function artistEdit(Request $request, Artist $artist, ArtistService $artistService, LoggerInterface $logger): Response
+    public function artistEdit(Request $request, Artist $artist, LoggerInterface $logger): Response
     {
         $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
 
@@ -315,7 +333,7 @@ class AdminPanelController extends AbstractController
             $artist = $form->getData();
 
             try {
-                $artistService->saveArtist($artist);
+                $this->artistService->saveArtist($artist);
 
                 return $this->redirectToRoute('artists');
             } catch (Exception $exception) {
@@ -328,6 +346,78 @@ class AdminPanelController extends AbstractController
 
         return $this->render('admin_panel/artist/add.html.twig', [
             'add_artist_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *      "/users",
+     *     name="admin_panel_user_list",
+     *     requirements={"id": "\d+"},
+     *     methods={"GET", "PUT"}
+     * )
+     */
+    public function userList(Request $request): Response
+    {
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->userService->createPaginatedList($page);
+
+        return $this->render('admin_panel/user/index.html.twig', [
+            'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *      "/user/{id}/edit",
+     *     name="admin_panel_user_edit",
+     *     requirements={"id": "\d+"},
+     *     methods={"GET", "PUT"}
+     * )
+     */
+    public function userEdit(Request $request, User $user): Response
+    {
+        $form = $this->createForm(UserType::class, $user, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+
+            try {
+                $this->userService->saveUser($user);
+
+                $this->addFlash('success', 'message_success');
+
+                return $this->redirectToRoute('admin_panel_user_list');
+            } catch (Exception $exception) {
+                $this->addFlash('error', 'message_error');
+            }
+        }
+
+        return $this->render('admin_panel/user/edit.html.twig', [
+            'user_add_form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/user/{id}/delete/{action?none}", name="admin_panel_user_delete", requirements={"id"="\d+"})
+     */
+    public function userDelete(User $user, string $action)
+    {
+        if ('confirm' === $action)
+        {
+            try {
+                $this->userService->deleteUser($user);
+                $this->addFlash('success', 'message_deleted_successfully');
+            } catch (Exception $exception) {
+                $this->addFlash('error', $exception->getCode());
+            }
+
+            return $this->redirectToRoute('admin_panel_user_list');
+        }
+
+        return $this->render('admin_panel/user/delete.html.twig', [
+            'user' => $user,
         ]);
     }
 }

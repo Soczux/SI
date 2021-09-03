@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminPanelController!{% endblock %}
+
+{% block content %}
+    <h1>Panel sterowania</h1>
+    <div>
+        {{ knp_menu_render('adminPanelMenu') }}
+    </div>
+
+    <div>
+        {% if pagination is defined and pagination.items | length %}
+            <div class="pagination_navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+            <table id="users-table">
+                <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(pagination, 'user.username' | trans, 'user.username') }}</th>
+                    <th>{{ 'user.email' | trans }}</th>
+                    <th>{{ 'actions.label' }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in pagination.items %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <a href="{{ path('user', { 'id': user.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('admin_panel_user_edit', { 'id': user.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                                <a href="{{ path('admin_panel_user_delete', { 'id': user.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination_navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

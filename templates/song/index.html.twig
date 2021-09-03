@@ -14,11 +14,7 @@
                     <th>{{ knp_pagination_sortable(pagination, 'song.title' | trans, 'song.title') }}</th>
                     <th>{{ 'song.artist' | trans }}</th>
                     <th>{{ 'song.play' | trans }}</th>
-                    <th>{{ 'song.more' | trans }}</th>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <th>{{ 'song.edit' | trans }}</th>
-                        <th>{{ 'song.delete' | trans }}</th>
-                    {% endif %}
+                    <th>{{ 'actions.more' | trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,16 +31,12 @@
                         </audio>
                     </td>
                     <td>
-                        <a href="{{ path('song', { 'id': song.id }) }}">...</a>
-                    </td>
+                        <a href="{{ path('song', { 'id': song.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <td>
-                            <a href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}">E</a>
-                        </td>
-                        <td>
-                            <a href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}">X</a>
-                        </td>
+                        <a href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                        <a href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
                     {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

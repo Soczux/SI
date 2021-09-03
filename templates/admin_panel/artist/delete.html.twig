@@ -5,7 +5,7 @@
 {% block content %}
     <div>
         <h1>Czy na pewno chcesz usunąć artystę {{ artist.name }}?</h1>
-        <a href="{{ path('artist_delete', { 'id': artist.id, 'action': 'confirm' }) }}">Potwierdź</a>
+        <a href="{{ path('admin_panel_artist_delete', { 'id': artist.id, 'action': 'confirm' }) }}">Potwierdź</a>
         <a href="{{ path('artists') }}">Anuluj</a>
     </div>
 {% endblock %}
