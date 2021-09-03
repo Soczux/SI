@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArtistController extends AbstractController
 {
@@ -48,7 +47,7 @@ class ArtistController extends AbstractController
      *     requirements={"id": "\d+"}
      * )
      */
-    public function artist(Request $request, Artist $artist, UserInterface $user = null)
+    public function artist(Request $request, Artist $artist)
     {
         $artistComment = new ArtistComment();
 
@@ -56,7 +55,7 @@ class ArtistController extends AbstractController
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $this->artistService->addComment($artist, $artistComment, $user);
+            $this->artistService->addComment($artist, $artistComment, $this->getUser());
 
             return $this->redirectToRoute('artist', ['id'=>$artist->getId()]);
         }

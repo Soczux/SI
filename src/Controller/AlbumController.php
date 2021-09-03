@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class AlbumController extends AbstractController
 {
@@ -49,7 +48,7 @@ class AlbumController extends AbstractController
      *     requirements={"id": "\d+"}
      * )
      */
-    public function album(Request $request, Album $album, UserInterface $user = null): Response
+    public function album(Request $request, Album $album): Response
     {
         $albumComment = new AlbumComment();
 
@@ -57,7 +56,7 @@ class AlbumController extends AbstractController
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $this->albumService->addComment($album, $albumComment, $user);
+            $this->albumService->addComment($album, $albumComment, $this->getUser());
 
             return $this->redirectToRoute('album', ['id' => $album->getId()]);
         }

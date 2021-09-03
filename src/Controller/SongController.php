@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class SongController extends AbstractController
 {
@@ -49,7 +48,7 @@ class SongController extends AbstractController
      *     requirements={"id": "\d+"}
      * )
      */
-    public function song(Request $request, Song $song, UserInterface $user = null): Response
+    public function song(Request $request, Song $song): Response
     {
         $songComment = new SongComment();
 
@@ -57,7 +56,7 @@ class SongController extends AbstractController
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $this->songService->addComment($song, $songComment, $user);
+            $this->songService->addComment($song, $songComment, $this->getUser());
 
             return $this->redirectToRoute('song', ['id' => $song->getId()]);
         }
