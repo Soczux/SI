@@ -4,17 +4,47 @@ pages:
   artists: artyści
   registration: rejestracja
   login: logowanie
+  account: moje konto
+  logout: wyloguj
+
+  admin_panel:
+    label: panel admina
+    song_add: dodaj piosenkę
+    artist_add: dodaj artystę
+    album_add: dodaj album
+    user_management: zarządzaj użytkownikami
+
+    user_page:
+      country_not_provided: Anonimowy
 
 artist:
-  name: Artysta
-  country: Kraj pochodzenia
+  name: artysta
+  country: kraj pochodzenia
+  tags: tagi
 
 song:
-  title: Tytuł
-  artist: Wykonawca
-  play: Posłuchaj
+  title: tytuł
+  artist: artysta
+  file: plik do przesłania
+  play: posłuchaj
 
 album:
-  title: Tytuł
-  artist: Wykonawca
-  cover: Okładka
+  title: tytuł
+  artist: artysta
+  cover: okładka
+
+actions:
+  label: operacje
+  show: wyświetl
+  edit: edytuj
+  delete: usuń
+  save: zapisz
+  comment: skomentuj
+
+user:
+  username: nazwa użytkownika
+  email: e-mail
+  country: kraj pochodzenia
+
+comment:
+  content: treść [max 1000 znaków]
