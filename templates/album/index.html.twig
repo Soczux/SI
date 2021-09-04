@@ -24,7 +24,13 @@
                     <td>
                         <a href="{{ path('albums', {'filters_artist_id': album.artist.id }) }}">{{ album.artist.name }}</a>
                     </td>
-                    <td><img height="100px" src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}"></td>
+                    <td>
+                        {% if album.logoUrl starts with 'http' %}
+                            <img height="100px" src="{{ album.logoUrl }}" alt="{{ album.name }}">
+                        {% else %}
+                            <img height="100px" src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}">
+                        {% endif %}
+                    </td>
                     <td>
                         <a class="btn btn-sm btn-outline-success" href="{{ path('album', { 'id': album.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
                     {% if is_granted('ROLE_ADMIN') %}

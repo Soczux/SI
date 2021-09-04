@@ -112,6 +112,9 @@
     "escapestudios/symfony2-coding-standard": {
         "version": "3.12.0"
     },
+    "fakerphp/faker": {
+        "version": "v1.16.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.17",
         "recipe": {
