@@ -1,15 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('artist') }}
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('artist') }}
-{% endblock %}
-
 {% block title %}Hello ArtistController!{% endblock %}
 
 {% block content %}
@@ -18,7 +8,7 @@
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <table id="artists-table">
+        <table id="artists-table" class="table table-striped">
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'artist.name' | trans, 'artist.name') }}</th>
@@ -29,9 +19,9 @@
             </thead>
             <tbody>
             {% for artist in pagination.items %}
-                <td>
+                <tr>
                     <td>{{ artist.name }}</td>
-                    <td><img src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.iso | lower }}"></td>
+                    <td><img width="150px" src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.iso | lower }}"></td>
                     <td>
                         {% if artist.tags is defined and artist.tags | length %}
                             {% for tag in artist.tags %}
@@ -40,10 +30,10 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('artist', { 'id': artist.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-success" href="{{ path('artist', { 'id': artist.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('admin_panel_artist_edit', { 'id': artist.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
-                        <a href="{{ path('admin_panel_artist_delete', { 'id': artist.id }) }}"><div>{{ 'actions.delete' | trans}}</div></a>
+                        <a class="btn btn-sm btn-outline-info" href="{{ path('admin_panel_artist_edit', { 'id': artist.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-danger" href="{{ path('admin_panel_artist_delete', { 'id': artist.id }) }}"><div>{{ 'actions.delete' | trans}}</div></a>
                     {% endif %}
                     </td>
                 </tr>

@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_panel/index.html.twig' %}
 
-{% block title %}{{ 'pages.artists' | trans | capitalize }}{% endblock %}
+{% block title %}{{ artist.name }}{% endblock %}
 
-{% block content %}
+{% block subcontent %}
     <div>
-        <h1>Czy na pewno chcesz usunąć artystę {{ artist.name }}?</h1>
-        <a href="{{ path('admin_panel_artist_delete', { 'id': artist.id, 'action': 'confirm' }) }}">Potwierdź</a>
-        <a href="{{ path('artists') }}">Anuluj</a>
+        <h1 style="margin-bottom: 10px">Czy na pewno chcesz usunąć artystę {{ artist.name }}?</h1>
+        <a class="btn btn-sm btn-outline-danger" href="{{ path('admin_panel_artist_delete', { 'id': artist.id, 'action': 'confirm' }) }}">Potwierdź</a>
+        <a class="btn btn-sm btn-outline-warning" href="{{ path('artists') }}">Anuluj</a>
     </div>
 {% endblock %}

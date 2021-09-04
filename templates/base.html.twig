@@ -6,50 +6,141 @@
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+            <style>
+                :root {
+                    --main-color: blueviolet;
+                }
+
+                #content {
+                    padding-top: 10px;
+                }
+
+                #content > ul {
+                    list-style-type: none;
+                    display: flex;
+                }
+
+                #content > ul > li {
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    font-size: 20pt;
+                    border: 1px solid var(--main-color);
+                    border-radius: 5px;
+                    text-align: center;
+                    padding: 0 10px;
+                }
+
+                #content > ul a {
+                    color: var(--main-color) !important;
+                }
+
+                #navigation {
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 15pt;
+                }
+
+                #navigation > * {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: right;
+                }
+
+                #navigation a {
+                    color: var(--main-color) !important;
+                }
+
+                #content table, #content table .btn {
+                    font-size: 14pt;
+                }
+
+                #content table a:not(.btn) {
+                    color: var(--main-color);
+                }
+
+                audio {
+                    height: 30px;
+                }
+
+                #admin-panel > ul {
+                    list-style-type: none;
+                    display: flex;
+                }
+
+                #admin-panel > ul > li {
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    font-size: 20pt;
+                    border: 1px solid var(--main-color);
+                    border-radius: 5px;
+                    text-align: center;
+                    padding: 0 10px
+                }
+
+                #admin-panel > ul a {
+                    color: var(--main-color) !important;
+                }
+
+                form .btn {
+                    color: white;
+                    background-color: var(--main-color);
+                    border-color: var(--main-color);
+                    margin-top: 10px;
+                }
+            </style>
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
     <body>
-        {% block body %}
-            {% for type, messages in app.session.flashBag.all %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ type }}" role="alert">
-                        {{ message|trans }}
-                    </div>
+        <div class="container-fluid">
+            {% block body %}
+                {% for type, messages in app.session.flashBag.all %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }}" role="alert">
+                            {{ message|trans }}
+                        </div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
 
-        <nav id="navigation">
-            {% block navigation %}
-                {% if not app.user %}
-                    {% block login_panel %}
-                    <div id="log-reg-panel">
-                            {{ knp_menu_render('loginMenu') }}
-                    </div>
+            <div class="row">
+                <div id="content" class="col-sm-10">
+                    {{ knp_menu_render('mainMenu')}}
+
+                    {% block content %}
                     {% endblock %}
-                {% else %}
-                    {% block profile_panel %}
-                    <div id="profile-panel">
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('admin_panel') }}">Admin panel</a>
+                </div>
+                <nav id="navigation" class="col-sm-2">
+                    {% block navigation %}
+                        {% if not app.user %}
+                            {% block login_panel %}
+                                <div id="log-reg-panel">
+                                    <a href="{{ path('login') }}">{{ 'pages.login' | trans }}</a>
+                                    <a href="{{ path('registration') }}">{{ 'pages.registration' | trans }}</a>
+                                </div>
+                            {% endblock %}
+                        {% else %}
+                            {% block profile_panel %}
+                                <div id="profile-panel">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('admin_panel') }}">{{ 'pages.admin_panel.label' | trans }}</a>
+                                    {% endif %}
+                                    <a href="{{ path('user', {'id': app.user.id}) }}">{{ 'pages.account' | trans }}</a>
+                                    <a href="{{ path('logout') }}">{{ 'pages.logout' | trans }}</a>
+                                </div>
+                            {% endblock %}
                         {% endif %}
-                        <a href="{{ path('user', {'id': app.user.id}) }}">Moje konto</a>
-                        <a href="{{ path('logout') }}">Wyloguj się</a>
-                    </div>
-                    {% endblock %}
-                {% endif %}
 
-                {{ knp_menu_render('mainMenu')}}
-            {% endblock %}
-        </nav>
-        <div id="content">
-            {% block content %}
+                    {% endblock %}
+                </nav>
+            </div>
             {% endblock %}
         </div>
-        {% endblock %}
     </body>
 </html>

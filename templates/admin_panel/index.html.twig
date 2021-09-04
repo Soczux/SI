@@ -1,10 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminPanelController!{% endblock %}
+{% block title %}{{ 'pages.admin_panel' | trans | capitalize }}{% endblock %}
 
 {% block content %}
-    <h1>Panel sterowania</h1>
-    <div>
+    <h1 style="margin-bottom: 10px">Panel sterowania</h1>
+    <div id="admin-panel">
         {{ knp_menu_render('adminPanelMenu') }}
+
+        {% block subcontent %}
+        {% endblock %}
     </div>
 {% endblock %}

@@ -1,13 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_panel/index.html.twig' %}
 
-{% block title %}Hello AdminPanelController!{% endblock %}
+{% block title %}{{ 'pages.admin_panel.user_management'}}{% endblock %}
 
-{% block content %}
-    <h1>Panel sterowania</h1>
-    <div>
-        {{ knp_menu_render('adminPanelMenu') }}
-    </div>
-
+{% block subcontent %}
     <div>
         {% if pagination is defined and pagination.items | length %}
             <div class="pagination_navigation">

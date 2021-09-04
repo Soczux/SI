@@ -43,5 +43,4 @@ services:
         arguments: ["@knp_menu.factory"]
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: mainMenu }
-            - { name: knp_menu.menu_builder, method: loginMenu, alias: loginMenu }
             - { name: knp_menu.menu_builder, method: adminPanelMenu, alias: adminPanelMenu }

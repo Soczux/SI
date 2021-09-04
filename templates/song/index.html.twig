@@ -8,13 +8,13 @@
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <table id="songs-table">
+        <table id="songs-table" class="table table-striped">
             <thead>
                 <tr>
                     <th>{{ knp_pagination_sortable(pagination, 'song.title' | trans, 'song.title') }}</th>
                     <th>{{ 'song.artist' | trans }}</th>
                     <th>{{ 'song.play' | trans }}</th>
-                    <th>{{ 'actions.more' | trans }}</th>
+                    <th>{{ 'actions.label' | trans }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,10 +31,10 @@
                         </audio>
                     </td>
                     <td>
-                        <a href="{{ path('song', { 'id': song.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-success" href="{{ path('song', { 'id': song.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
-                        <a href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-info" href="{{ path('admin_panel_song_edit', { 'id': song.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-danger" href="{{ path('admin_panel_song_delete', { 'id': song.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
                     {% endif %}
                     </td>
                 </tr>

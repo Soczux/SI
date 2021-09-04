@@ -1,15 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('album') }}
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('album') }}
-{% endblock %}
-
 {% block title %}{{ 'pages.albums' | trans | capitalize }}{% endblock %}
 
 {% block content %}
@@ -18,13 +8,13 @@
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <table id="albums-table">
+        <table id="albums-table" class="table table-striped">
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'album.title' | trans, 'album.title') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'album.artist' | trans, 'artist.name') }}</th>
                 <th>{{ 'album.cover' | trans }}</th>
-                <th>{{ 'actions.label' }}</th>
+                <th>{{ 'actions.label' | trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -34,12 +24,12 @@
                     <td>
                         <a href="{{ path('albums', {'filters_artist_id': album.artist.id }) }}">{{ album.artist.name }}</a>
                     </td>
-                    <td><img src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}"></td>
+                    <td><img height="100px" src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}"></td>
                     <td>
-                        <a href="{{ path('album', { 'id': album.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-success" href="{{ path('album', { 'id': album.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('admin_panel_album_edit', { 'id': album.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
-                        <a href="{{ path('admin_panel_album_delete', { 'id': album.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-info" href="{{ path('admin_panel_album_edit', { 'id': album.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                        <a class="btn btn-sm btn-outline-danger" href="{{ path('admin_panel_album_delete', { 'id': album.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
                     {% endif %}
                     </td>
                 </tr>

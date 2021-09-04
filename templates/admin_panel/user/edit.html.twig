@@ -1,12 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_panel/index.html.twig' %}
 
-{% block title %}Hello AdminPanelController!{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
 
-{% block content %}
-    <h1>Panel sterowania</h1>
-    <div>
-        {{ knp_menu_render('adminPanelMenu') }}
-
-        {{ form(user_add_form) }}
-    </div>
+{% block subcontent %}
+    {{ form(user_add_form) }}
 {% endblock %}

@@ -25,23 +25,14 @@ class MenuBuilder
         return $menu;
     }
 
-    public function loginMenu(array $option): ItemInterface
-    {
-        $menu = $this->factory->createItem('root');
-
-        $menu->addChild('pages.registration', ['route' => 'registration']);
-        $menu->addChild('pages.login', ['route' => 'login']);
-
-        return $menu;
-    }
-
     public function adminPanelMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('Dodaj piosenkę', ['route' => 'admin_panel_song_add']);
-        $menu->addChild('Dodaj artystę', ['route' => 'admin_panel_artist_add']);
-        $menu->addChild('Dodaj album', ['route' => 'admin_panel_album_add']);
+        $menu->addChild('pages.admin_panel.song_add', ['route' => 'admin_panel_song_add']);
+        $menu->addChild('pages.admin_panel.artist_add', ['route' => 'admin_panel_artist_add']);
+        $menu->addChild('pages.admin_panel.album_add', ['route' => 'admin_panel_album_add']);
+        $menu->addChild('pages.admin_panel.user_management', ['route' => 'admin_panel_user_list']);
 
         return $menu;
     }

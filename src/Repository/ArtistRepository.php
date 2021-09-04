@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArtistRepository extends ServiceEntityRepository
 {
-    const PAGINATOR_ITEMS_PER_PAGE = 15;
+    const PAGINATOR_ITEMS_PER_PAGE = 8;
 
     public function __construct(ManagerRegistry $registry)
     {
