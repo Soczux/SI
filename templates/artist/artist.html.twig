@@ -3,7 +3,7 @@
 {% block title %} {{ artist.name }} {% endblock %}
 
 {% block content %}
-    <h2>{{ artist.name }}</h2>
+    <h1>{{ artist.name }}</h1>
 
     {% if is_granted('ROLE_USER') %}
         {{ form(commentForm) }}
@@ -11,10 +11,12 @@
 
     <div id="artist_comments">
         {% for comment in artist.artistComments %}
-            <div class="artist_comment">
-                <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
+            <div class="artist_comment comment">
+                <div>
+                    <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
+                    <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
+                </div>
                 <p>{{ comment.content }}</p>
-                <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
             </div>
         {% endfor %}
     </div>

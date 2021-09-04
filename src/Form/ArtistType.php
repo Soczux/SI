@@ -24,12 +24,16 @@ class ArtistType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, ['label' => 'artist.name'])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
+                'label' => 'artist.country'
             ])
-            ->add('tags', TextType::class, ['required' => false])
-            ->add('save', SubmitType::class)
+            ->add('tags', TextType::class, [
+                'required' => false,
+                'label' => 'artist.tags',
+            ])
+            ->add('save', SubmitType::class, ['label' => 'actions.save'])
         ;
 
         $builder->get('tags')->addModelTransformer($this->artistTagDataTransformer);

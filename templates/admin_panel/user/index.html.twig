@@ -1,6 +1,6 @@
 {% extends 'admin_panel/index.html.twig' %}
 
-{% block title %}{{ 'pages.admin_panel.user_management'}}{% endblock %}
+{% block title %}{{ 'pages.admin_panel.user_management' | trans }}{% endblock %}
 
 {% block subcontent %}
     <div>
@@ -9,12 +9,12 @@
                 {{ knp_pagination_render(pagination) }}
             </div>
 
-            <table id="users-table">
+            <table class="table table-striped" id="users-table">
                 <thead>
                 <tr>
                     <th>{{ knp_pagination_sortable(pagination, 'user.username' | trans, 'user.username') }}</th>
                     <th>{{ 'user.email' | trans }}</th>
-                    <th>{{ 'actions.label' }}</th>
+                    <th>{{ 'actions.label' | trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,11 +23,9 @@
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
                         <td>
-                            <a href="{{ path('user', { 'id': user.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('admin_panel_user_edit', { 'id': user.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
-                                <a href="{{ path('admin_panel_user_delete', { 'id': user.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
-                            {% endif %}
+                            <a class="btn btn-sm btn-outline-success" href="{{ path('user', { 'id': user.id }) }}"><div>{{ 'actions.show' | trans }}</div></a>
+                            <a class="btn btn-sm btn-outline-info" href="{{ path('admin_panel_user_edit', { 'id': user.id }) }}"><div>{{ 'actions.edit' | trans }}</div></a>
+                            <a class="btn btn-sm btn-outline-danger" href="{{ path('admin_panel_user_delete', { 'id': user.id }) }}"><div>{{ 'actions.delete' | trans }}</div></a>
                         </td>
                     </tr>
                 {% endfor %}

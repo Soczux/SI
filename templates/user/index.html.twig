@@ -4,16 +4,20 @@
 
 {% block content %}
     <div>
-        <p>{{ user.username }}</p>
-        <p>{{ user.email }}</p>
+        <p>{{ 'user.username' | trans | capitalize }}: {{ user.username }}</p>
+        <p>{{ 'user.email' | trans | capitalize }}: {{ user.email }}</p>
         {% if not user.country is null %}
-            <p><img src="{{ asset('build/gfx/countries/' ~ user.country.iso | lower ~ '.png') }}" alt="{{ user.country.iso | lower }}"></p>
+            <p>{{ 'user.country' | trans | capitalize }}: <img style="width: 150px" src="{{ asset('build/gfx/countries/' ~ user.country.iso | lower ~ '.png') }}" alt="{{ user.country.iso | lower }}"></p>
         {% else %}
-            <p>B/D</p>
+            <p>{{ 'user.country' | trans | capitalize }}: {{ 'pages.user_page.country_not_provided' | trans }}</p>
         {% endif %}
 
-        {% if app.user and (app.user.id == user.id or is_granted('ROLE_ADMIN')) %}
-            <div><a href="{{ path('user_edit', {'id': user.id}) }}">{{ 'actions.edit' | trans }}</a></div>
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-sm btn-outline-info" style="color: white; background-color: var(--main-color); border-color: var(--main-color)" href="{{ path('admin_panel_user_edit', {'id': user.id}) }}">{{ 'actions.edit' | trans }}</a>
+            {% elseif app.user.id == user.id %}
+                <a class="btn btn-sm btn-outline-info" style="color: white;background-color: var(--main-color); border-color: var(--main-color)" href="{{ path('user_edit', {'id': user.id}) }}">{{ 'actions.edit' | trans }}</a>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}

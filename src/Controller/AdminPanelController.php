@@ -395,6 +395,7 @@ class AdminPanelController extends AbstractController
         }
 
         return $this->render('admin_panel/user/edit.html.twig', [
+            'user' => $this->getUser(),
             'user_add_form' => $form->createView(),
         ]);
     }

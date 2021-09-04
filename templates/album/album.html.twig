@@ -3,6 +3,9 @@
 {% block title %} {{ album.name }} {% endblock %}
 
 {% block content %}
+    <h1>{{ album.name }}</h1>
+    <h3>{{ album.artist.name }}</h3>
+
     <img src="{{ asset('gfx/covers/' ~ album.logoUrl) }}" alt="{{ album.name }}">
 
     {% if is_granted('ROLE_USER') %}
@@ -11,10 +14,12 @@
 
     <div id="album_comments">
         {% for comment in album.albumComments %}
-            <div class="album_comment">
-                <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
+            <div class="album_comment comment">
+                <div>
+                    <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
+                    <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
+                </div>
                 <p>{{ comment.content }}</p>
-                <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
             </div>
         {% endfor %}
     </div>

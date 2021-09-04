@@ -20,10 +20,10 @@ class SongCommentType extends AbstractType
                 [
                     'required' => true,
                     'attr' => ['max_length' => 1000],
-                    'label' => 'comment_content',
+                    'label' => 'comment.content',
                 ]
             )
-            ->add('comment_add', SubmitType::class)
+            ->add('comment_add', SubmitType::class, ['label' => 'actions.comment'])
         ;
     }
 

@@ -3,6 +3,9 @@
 {% block title %} {{ song.title }} {% endblock %}
 
 {% block content %}
+    <h1>{{ song.title }}</h1>
+    <h3>{{ song.artist.name }}</h3>
+
     <audio controls>
         <source src="{{ asset('audio/songs/' ~ song.url) }}">
         Your browser does not support the audio element.
@@ -14,10 +17,12 @@
 
     <div id="song_comments">
         {% for comment in song.songComments %}
-            <div class="song_comment">
-                <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
+            <div class="song_comment comment">
+                <div>
+                    <p><a href="{{ path('user', {'id': comment.user.id}) }}">{{ comment.user.username }}</a></p>
+                    <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
+                </div>
                 <p>{{ comment.content }}</p>
-                <p>{{ comment.commentedOn | format_datetime('short', 'short') }}</p>
             </div>
         {% endfor %}
     </div>

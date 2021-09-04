@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -17,8 +18,9 @@ class SongType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
+            ->add('title', TextType::class, ['label' => 'song.title'])
             ->add('url', FileType::class, [
+                'label' => 'song.file',
                 'mapped' => false,
                 'constraints' => [
                     new File([
@@ -33,8 +35,9 @@ class SongType extends AbstractType
             ])
             ->add('artist', EntityType::class, [
                 'class' => Artist::class,
+                'label' => 'song.artist',
             ])
-            ->add('save', SubmitType::class)
+            ->add('save', SubmitType::class, ['label' => 'actions.save'])
         ;
     }
 
