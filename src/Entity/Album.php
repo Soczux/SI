@@ -27,7 +27,7 @@ class Album
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $logo_url;
+    private $logoUrl;
 
     /**
      * @ORM\ManyToOne(targetEntity=Artist::class, inversedBy="albums")
@@ -64,12 +64,12 @@ class Album
 
     public function getLogoUrl(): ?string
     {
-        return $this->logo_url;
+        return $this->logoUrl;
     }
 
-    public function setLogoUrl(string $logo_url): self
+    public function setLogoUrl(string $logoUrl): self
     {
-        $this->logo_url = $logo_url;
+        $this->logoUrl = $logoUrl;
 
         return $this;
     }

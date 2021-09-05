@@ -20,7 +20,7 @@ final class Version20210909230824 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE album (id INT AUTO_INCREMENT NOT NULL, artist_id INT NOT NULL, name VARCHAR(100) NOT NULL, logo_url VARCHAR(255) NOT NULL, INDEX IDX_39986E43B7970CF8 (artist_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE album (id INT AUTO_INCREMENT NOT NULL, artist_id INT NOT NULL, name VARCHAR(100) NOT NULL, logoUrl VARCHAR(255) NOT NULL, INDEX IDX_39986E43B7970CF8 (artist_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE album_comment (id INT AUTO_INCREMENT NOT NULL, album_id INT NOT NULL, user_id INT DEFAULT NULL, content VARCHAR(1000) NOT NULL, commented_on DATETIME NOT NULL, INDEX IDX_C1A30F7E1137ABCF (album_id), INDEX IDX_C1A30F7EA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE artist (id INT AUTO_INCREMENT NOT NULL, country_id INT NOT NULL, name VARCHAR(100) NOT NULL, INDEX IDX_1599687F92F3E70 (country_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE artist_artist_tag (artist_id INT NOT NULL, artist_tag_id INT NOT NULL, INDEX IDX_38F3ED4BB7970CF8 (artist_id), INDEX IDX_38F3ED4B48D06F6F (artist_tag_id), PRIMARY KEY(artist_id, artist_tag_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

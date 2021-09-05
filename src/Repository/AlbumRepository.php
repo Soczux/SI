@@ -52,7 +52,7 @@ class AlbumRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
-                'partial album.{id,name,logo_url}',
+                'partial album.{id,name,logoUrl}',
                 'partial artist.{id,name}'
             )
             ->leftJoin('album.artist', 'artist')

@@ -174,7 +174,7 @@ class AdminPanelController extends AbstractController
 
             if ($coverFile) {
                 $coverFilename = $this->fileUploader->uploadAlbum($coverFile);
-                $album->setUrl($coverFilename);
+                $album->setLogoUrl($coverFilename);
             }
 
             try {
@@ -229,20 +229,13 @@ class AdminPanelController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
+
             $coverFile = $form->get('logo')->getData();
 
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $album->getName());
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
-
-            try {
-                $coverFile->move($this->getParameter('covers_directory'), $newFilename);
-            } catch (FileException $exception) {
-                $logger->error('Cannot move file', [
-                    'exception' => $exception->getMessage(),
-                ]);
+            if ($coverFile) {
+                $coverFilename = $this->fileUploader->uploadAlbum($coverFile);
+                $album->setLogoUrl($coverFilename);
             }
-
-            $album->setLogoUrl($newFilename);
 
             try {
                 $this->albumService->saveAlbum($album);
