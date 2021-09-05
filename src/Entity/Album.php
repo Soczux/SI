@@ -36,7 +36,7 @@ class Album
     private $artist;
 
     /**
-     * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="album", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="album", cascade={"remove", "persist"})
      */
     private $albumComments;
 
