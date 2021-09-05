@@ -48,3 +48,6 @@ user:
 
 comment:
   content: treść [max 1000 znaków]
+
+message_success: Operacja zakończona sukcesem
+message_error: Operacja nie powiodła się

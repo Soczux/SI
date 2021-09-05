@@ -16,7 +16,6 @@ use App\Service\FileUploader;
 use App\Service\SongService;
 use App\Service\UserService;
 use Exception;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -57,7 +56,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/song/add", name="admin_panel_song_add", methods={"GET","POST"})
      */
-    public function songAdd(Request $request, LoggerInterface $logger): Response
+    public function songAdd(Request $request): Response
     {
         $song = new Song();
 
@@ -77,11 +76,11 @@ class AdminPanelController extends AbstractController
             try {
                 $this->songService->saveSong($song);
 
+                $this->addFlash('success', 'message_success');
+
                 $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
-                $logger->error('Cannot add song', [
-                    'exception' => $exception->getMessage(),
-                ]);
+                $this->addFlash('error', 'message_error');
             }
         }
 
@@ -98,9 +97,10 @@ class AdminPanelController extends AbstractController
         if ('confirm' === $action) {
             try {
                 $this->songService->deleteSong($song);
-                $this->addFlash('success', 'message_deleted_successfully');
+
+                $this->addFlash('success', 'message_success');
             } catch (Exception $exception) {
-                $this->addFlash('error', $exception->getMessage());
+                $this->addFlash('error', 'message_error');
             }
 
             return $this->redirectToRoute('songs');
@@ -119,36 +119,29 @@ class AdminPanelController extends AbstractController
      *     methods={"GET","PUT"}
      * )
      */
-    public function songEdit(Request $request, Song $song, LoggerInterface $logger): Response
+    public function songEdit(Request $request, Song $song): Response
     {
         $form = $this->createForm(SongType::class, $song, ['method' => 'PUT']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $song = $form->getData();
+
             $songFile = $form->get('url')->getData();
 
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $song->getTitle());
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
-
-            try {
-                $songFile->move($this->getParameter('audio_file_directory'), $newFilename);
-            } catch (FileException $exception) {
-                $logger->error('Cannot move file', [
-                    'exception' => $exception->getMessage(),
-                ]);
+            if ($songFile) {
+                $songFilename = $this->fileUploader->uploadSong($songFile);
+                $song->setUrl($songFilename);
             }
-
-            $song->setUrl($newFilename);
 
             try {
                 $this->songService->saveSong($song);
 
+                $this->addFlash('success', 'message_success');
+
                 return $this->redirectToRoute('songs');
             } catch (Exception $exception) {
-                $logger->error('Cannot add song', [
-                    'exception' => $exception->getMessage(),
-                ]);
+                $this->addFlash('error', 'message_error');
             }
         }
 
@@ -160,7 +153,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/album/add", name="admin_panel_album_add", methods={"GET","POST"})
      */
-    public function albumAdd(Request $request, LoggerInterface $logger): Response
+    public function albumAdd(Request $request): Response
     {
         $album = new Album();
 
@@ -180,11 +173,11 @@ class AdminPanelController extends AbstractController
             try {
                 $this->albumService->saveAlbum($album);
 
+                $this->addFlash('success', 'message_success');
+
                 $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
-                $logger->error('Cannot add artist', [
-                    'exception' => $exception->getMessage(),
-                ]);
+                $this->addFlash('error', 'message_error');
             }
         }
 
@@ -201,9 +194,10 @@ class AdminPanelController extends AbstractController
         if ('confirm' === $action) {
             try {
                 $this->albumService->deleteAlbum($album);
-                $this->addFlash('success', 'message_deleted_successfully');
+
+                $this->addFlash('success', 'message_success');
             } catch (Exception $exception) {
-                $this->addFlash('error', $exception->getMessage());
+                $this->addFlash('error', 'message_error');
             }
 
             return $this->redirectToRoute('albums');
@@ -222,7 +216,7 @@ class AdminPanelController extends AbstractController
      *     methods={"GET","PUT"}
      * )
      */
-    public function albumEdit(Request $request, Album $album, LoggerInterface $logger): Response
+    public function albumEdit(Request $request, Album $album): Response
     {
         $form = $this->createForm(AlbumType::class, $album, ['method' => 'PUT']);
 
@@ -240,11 +234,11 @@ class AdminPanelController extends AbstractController
             try {
                 $this->albumService->saveAlbum($album);
 
+                $this->addFlash('success', 'message_success');
+
                 return $this->redirectToRoute('albums');
             } catch (Exception $exception) {
-                $logger->error('Cannot add artist', [
-                    'exception' => $exception->getMessage(),
-                ]);
+                $this->addFlash('error', 'message_error');
             }
         }
 
@@ -256,7 +250,7 @@ class AdminPanelController extends AbstractController
     /**
      * @Route("/artist/add", name="admin_panel_artist_add", methods={"GET","POST"})
      */
-    public function artistAdd(Request $request, LoggerInterface $logger): Response
+    public function artistAdd(Request $request): Response
     {
         $artist = new Artist();
 
@@ -269,11 +263,11 @@ class AdminPanelController extends AbstractController
             try {
                 $this->artistService->saveArtist($artist);
 
+                $this->addFlash('success', 'message_success');
+
                 $this->redirectToRoute('admin_panel');
             } catch (Exception $exception) {
-                $logger->error('Cannot add artist', [
-                    'exception' => $exception->getMessage(),
-                ]);
+                $this->addFlash('error', 'message_error');
             }
         }
 
@@ -290,9 +284,10 @@ class AdminPanelController extends AbstractController
         if ('confirm' === $action) {
             try {
                 $this->artistService->deleteArtist($artist);
-                $this->addFlash('success', 'message_deleted_successfully');
+
+                $this->addFlash('success', 'message_success');
             } catch (Exception $exception) {
-                $this->addFlash('error', $exception->getCode());
+                $this->addFlash('error', 'message_error');
             }
 
             return $this->redirectToRoute('artists');
@@ -311,7 +306,7 @@ class AdminPanelController extends AbstractController
      *     methods={"GET","PUT"}
      * )
      */
-    public function artistEdit(Request $request, Artist $artist, LoggerInterface $logger): Response
+    public function artistEdit(Request $request, Artist $artist): Response
     {
         $form = $this->createForm(ArtistType::class, $artist, ['method' => 'PUT']);
 
@@ -322,11 +317,11 @@ class AdminPanelController extends AbstractController
             try {
                 $this->artistService->saveArtist($artist);
 
+                $this->addFlash('success', 'message_success');
+
                 return $this->redirectToRoute('artists');
             } catch (Exception $exception) {
-                $logger->error('Cannot add artist', [
-                        'exception' => $exception->getMessage(),
-                ]);
+                $this->addFlash('error', 'message_error');
             }
         }
 
@@ -394,9 +389,10 @@ class AdminPanelController extends AbstractController
         if ('confirm' === $action) {
             try {
                 $this->userService->deleteUser($user);
-                $this->addFlash('success', 'message_deleted_successfully');
+
+                $this->addFlash('success', 'message_success');
             } catch (Exception $exception) {
-                $this->addFlash('error', $exception->getCode());
+                $this->addFlash('error', 'message_error');
             }
 
             return $this->redirectToRoute('admin_panel_user_list');

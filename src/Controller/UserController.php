@@ -50,7 +50,7 @@ class UserController extends AbstractController
 
                 $this->addFlash('success', 'message_success');
 
-                return $this->redirectToRoute('admin_panel_user_list');
+                return $this->redirectToRoute('/user', ['id' => $user->id]);
             } catch (Exception $exception) {
                 $this->addFlash('error', 'message_error');
             }
