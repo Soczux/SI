@@ -36,25 +36,13 @@ class Song
     private $artist;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Playlist::class, mappedBy="song")
-     */
-    private $playlists;
-
-    /**
      * @ORM\OneToMany(targetEntity=SongComment::class, mappedBy="song", cascade={"persist"})
      */
     private $songComments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SongReaction::class, mappedBy="song")
-     */
-    private $songReactions;
-
     public function __construct()
     {
-        $this->playlists = new ArrayCollection();
         $this->songComments = new ArrayCollection();
-        $this->songReactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,33 +87,6 @@ class Song
     }
 
     /**
-     * @return Collection|Playlist[]
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    public function addPlaylist(Playlist $playlist): self
-    {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists[] = $playlist;
-            $playlist->addSong($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(Playlist $playlist): self
-    {
-        if ($this->playlists->removeElement($playlist)) {
-            $playlist->removeSong($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|SongComment[]
      */
     public function getSongComments(): Collection
@@ -149,36 +110,6 @@ class Song
             // set the owning side to null (unless already changed)
             if ($songComment->getSong() === $this) {
                 $songComment->setSong(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|SongReaction[]
-     */
-    public function getSongReactions(): Collection
-    {
-        return $this->songReactions;
-    }
-
-    public function addSongReaction(SongReaction $songReaction): self
-    {
-        if (!$this->songReactions->contains($songReaction)) {
-            $this->songReactions[] = $songReaction;
-            $songReaction->setSong($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSongReaction(SongReaction $songReaction): self
-    {
-        if ($this->songReactions->removeElement($songReaction)) {
-            // set the owning side to null (unless already changed)
-            if ($songReaction->getSong() === $this) {
-                $songReaction->setSong(null);
             }
         }
 

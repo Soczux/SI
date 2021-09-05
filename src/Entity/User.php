@@ -51,19 +51,9 @@ class User implements UserInterface
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="user")
-     */
-    private $playlists;
-
-    /**
      * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="user")
      */
     private $albumComments;
-
-    /**
-     * @ORM\OneToMany(targetEntity=AlbumReaction::class, mappedBy="user")
-     */
-    private $albumReactions;
 
     /**
      * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="user")
@@ -75,25 +65,11 @@ class User implements UserInterface
      */
     private $songComments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ArtistReaction::class, mappedBy="user")
-     */
-    private $artistReactions;
-
-    /**
-     * @ORM\OneToMany(targetEntity=SongReaction::class, mappedBy="user")
-     */
-    private $songReactions;
-
     public function __construct()
     {
-        $this->playlists = new ArrayCollection();
         $this->albumComments = new ArrayCollection();
-        $this->albumReactions = new ArrayCollection();
         $this->artistComments = new ArrayCollection();
         $this->songComments = new ArrayCollection();
-        $this->artistReactions = new ArrayCollection();
-        $this->songReactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,36 +173,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Playlist[]
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    public function addPlaylist(Playlist $playlist): self
-    {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists[] = $playlist;
-            $playlist->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(Playlist $playlist): self
-    {
-        if ($this->playlists->removeElement($playlist)) {
-            // set the owning side to null (unless already changed)
-            if ($playlist->getUser() === $this) {
-                $playlist->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|AlbumComment[]
      */
     public function getAlbumComments(): Collection
@@ -250,36 +196,6 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($albumComment->getUser() === $this) {
                 $albumComment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|AlbumReaction[]
-     */
-    public function getAlbumReactions(): Collection
-    {
-        return $this->albumReactions;
-    }
-
-    public function addAlbumReaction(AlbumReaction $albumReaction): self
-    {
-        if (!$this->albumReactions->contains($albumReaction)) {
-            $this->albumReactions[] = $albumReaction;
-            $albumReaction->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAlbumReaction(AlbumReaction $albumReaction): self
-    {
-        if ($this->albumReactions->removeElement($albumReaction)) {
-            // set the owning side to null (unless already changed)
-            if ($albumReaction->getUser() === $this) {
-                $albumReaction->setUser(null);
             }
         }
 
@@ -340,66 +256,6 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($songComment->getUser() === $this) {
                 $songComment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ArtistReaction[]
-     */
-    public function getArtistReactions(): Collection
-    {
-        return $this->artistReactions;
-    }
-
-    public function addArtistReaction(ArtistReaction $artistReaction): self
-    {
-        if (!$this->artistReactions->contains($artistReaction)) {
-            $this->artistReactions[] = $artistReaction;
-            $artistReaction->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArtistReaction(ArtistReaction $artistReaction): self
-    {
-        if ($this->artistReactions->removeElement($artistReaction)) {
-            // set the owning side to null (unless already changed)
-            if ($artistReaction->getUser() === $this) {
-                $artistReaction->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|SongReaction[]
-     */
-    public function getSongReactions(): Collection
-    {
-        return $this->songReactions;
-    }
-
-    public function addSongReaction(SongReaction $songReaction): self
-    {
-        if (!$this->songReactions->contains($songReaction)) {
-            $this->songReactions[] = $songReaction;
-            $songReaction->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSongReaction(SongReaction $songReaction): self
-    {
-        if ($this->songReactions->removeElement($songReaction)) {
-            // set the owning side to null (unless already changed)
-            if ($songReaction->getUser() === $this) {
-                $songReaction->setUser(null);
             }
         }
 

@@ -40,15 +40,9 @@ class Album
      */
     private $albumComments;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AlbumReaction::class, mappedBy="album")
-     */
-    private $albumReactions;
-
     public function __construct()
     {
         $this->albumComments = new ArrayCollection();
-        $this->albumReactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,36 +110,6 @@ class Album
             // set the owning side to null (unless already changed)
             if ($albumComment->getAlbum() === $this) {
                 $albumComment->setAlbum(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|AlbumReaction[]
-     */
-    public function getAlbumReactions(): Collection
-    {
-        return $this->albumReactions;
-    }
-
-    public function addAlbumReaction(AlbumReaction $albumReaction): self
-    {
-        if (!$this->albumReactions->contains($albumReaction)) {
-            $this->albumReactions[] = $albumReaction;
-            $albumReaction->setAlbum($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAlbumReaction(AlbumReaction $albumReaction): self
-    {
-        if ($this->albumReactions->removeElement($albumReaction)) {
-            // set the owning side to null (unless already changed)
-            if ($albumReaction->getAlbum() === $this) {
-                $albumReaction->setAlbum(null);
             }
         }
 

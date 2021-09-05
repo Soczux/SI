@@ -46,11 +46,6 @@ class Artist
     private $artistComments;
 
     /**
-     * @ORM\OneToMany(targetEntity=ArtistReaction::class, mappedBy="artist")
-     */
-    private $artistReactions;
-
-    /**
      * @ORM\ManyToMany(targetEntity=ArtistTag::class, inversedBy="artists")
      */
     private $tags;
@@ -60,7 +55,6 @@ class Artist
         $this->songs = new ArrayCollection();
         $this->albums = new ArrayCollection();
         $this->artistComments = new ArrayCollection();
-        $this->artistReactions = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
 
@@ -177,36 +171,6 @@ class Artist
             // set the owning side to null (unless already changed)
             if ($artistComment->getArtist() === $this) {
                 $artistComment->setArtist(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ArtistReaction[]
-     */
-    public function getArtistReactions(): Collection
-    {
-        return $this->artistReactions;
-    }
-
-    public function addArtistReaction(ArtistReaction $artistReaction): self
-    {
-        if (!$this->artistReactions->contains($artistReaction)) {
-            $this->artistReactions[] = $artistReaction;
-            $artistReaction->setArtist($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArtistReaction(ArtistReaction $artistReaction): self
-    {
-        if ($this->artistReactions->removeElement($artistReaction)) {
-            // set the owning side to null (unless already changed)
-            if ($artistReaction->getArtist() === $this) {
-                $artistReaction->setArtist(null);
             }
         }
 
