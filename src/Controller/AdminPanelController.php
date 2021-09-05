@@ -280,8 +280,7 @@ class AdminPanelController extends AbstractController
             } catch (Exception $exception) {
                 $logger->error('Cannot add artist', [
                     'exception' => $exception->getMessage(),
-                    ]
-                );
+                ]);
             }
         }
 
@@ -334,8 +333,7 @@ class AdminPanelController extends AbstractController
             } catch (Exception $exception) {
                 $logger->error('Cannot add artist', [
                         'exception' => $exception->getMessage(),
-                    ]
-                );
+                ]);
             }
         }
 
