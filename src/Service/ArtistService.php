@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\AlbumComment;
 use App\Entity\Artist;
 use App\Entity\ArtistComment;
 use App\Repository\ArtistRepository;

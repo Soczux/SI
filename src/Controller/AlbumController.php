@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\AlbumComment;
 use App\Form\AlbumCommentType;
-use App\Repository\AlbumRepository;
 use App\Service\AlbumService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +51,7 @@ class AlbumController extends AbstractController
     {
         $albumComment = new AlbumComment();
 
-        $commentForm = $this->createForm(AlbumCommentType::class, $albumComment, ['method'=>'POST']);
+        $commentForm = $this->createForm(AlbumCommentType::class, $albumComment, ['method' => 'POST']);
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Song;
 use App\Entity\SongComment;
 use App\Form\SongCommentType;
-use App\Repository\SongRepository;
 use App\Service\SongService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +51,7 @@ class SongController extends AbstractController
     {
         $songComment = new SongComment();
 
-        $commentForm = $this->createForm(SongCommentType::class, $songComment, ['method'=>'POST']);
+        $commentForm = $this->createForm(SongCommentType::class, $songComment, ['method' => 'POST']);
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {

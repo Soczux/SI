@@ -30,7 +30,7 @@ class ArtistCommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ArtistComment::class
+            'data_class' => ArtistComment::class,
         ]);
     }
 }

@@ -17,7 +17,8 @@ class SongService
 
     private $paginator;
 
-    public function __construct(SongRepository $songRepository, PaginatorInterface $paginator) {
+    public function __construct(SongRepository $songRepository, PaginatorInterface $paginator)
+    {
         $this->songRepository = $songRepository;
         $this->paginator = $paginator;
     }
@@ -26,7 +27,8 @@ class SongService
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function saveSong(Song $song) {
+    public function saveSong(Song $song)
+    {
         $this->songRepository->save($song);
     }
 

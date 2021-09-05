@@ -15,16 +15,14 @@ use App\Service\ArtistService;
 use App\Service\FileUploader;
 use App\Service\SongService;
 use App\Service\UserService;
-use Doctrine\ORM\ORMException;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/admin_panel")
@@ -80,7 +78,7 @@ class AdminPanelController extends AbstractController
                 $this->songService->saveSong($song);
 
                 $this->redirectToRoute('admin_panel');
-            } catch(Exception $exception) {
+            } catch (Exception $exception) {
                 $logger->error('Cannot add song', [
                     'exception' => $exception->getMessage(),
                 ]);
@@ -97,8 +95,7 @@ class AdminPanelController extends AbstractController
      */
     public function songDelete(Song $song, string $action)
     {
-        if ('confirm' === $action)
-        {
+        if ('confirm' === $action) {
             try {
                 $this->songService->deleteSong($song);
                 $this->addFlash('success', 'message_deleted_successfully');
@@ -148,7 +145,7 @@ class AdminPanelController extends AbstractController
                 $this->songService->saveSong($song);
 
                 return $this->redirectToRoute('songs');
-            } catch(Exception $exception) {
+            } catch (Exception $exception) {
                 $logger->error('Cannot add song', [
                     'exception' => $exception->getMessage(),
                 ]);
@@ -201,8 +198,7 @@ class AdminPanelController extends AbstractController
      */
     public function albumDelete(Album $album, string $action)
     {
-        if ('confirm' === $action)
-        {
+        if ('confirm' === $action) {
             try {
                 $this->albumService->deleteAlbum($album);
                 $this->addFlash('success', 'message_deleted_successfully');
@@ -228,7 +224,7 @@ class AdminPanelController extends AbstractController
      */
     public function albumEdit(Request $request, Album $album, LoggerInterface $logger): Response
     {
-        $form = $this->createForm(AlbumType::class, $album, ['method'=>'PUT']);
+        $form = $this->createForm(AlbumType::class, $album, ['method' => 'PUT']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -299,8 +295,7 @@ class AdminPanelController extends AbstractController
      */
     public function artistDelete(Artist $artist, string $action)
     {
-        if ('confirm' === $action)
-        {
+        if ('confirm' === $action) {
             try {
                 $this->artistService->deleteArtist($artist);
                 $this->addFlash('success', 'message_deleted_successfully');
@@ -405,8 +400,7 @@ class AdminPanelController extends AbstractController
      */
     public function userDelete(User $user, string $action)
     {
-        if ('confirm' === $action)
-        {
+        if ('confirm' === $action) {
             try {
                 $this->userService->deleteUser($user);
                 $this->addFlash('success', 'message_deleted_successfully');

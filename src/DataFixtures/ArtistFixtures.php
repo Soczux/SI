@@ -25,7 +25,7 @@ class ArtistFixtures extends AbstractBaseFixtures implements DependentFixtureInt
 
             $tagCounter = rand(1, 5);
 
-            for ($i = 0; $i < $tagCounter; $i++) {
+            for ($i = 0; $i < $tagCounter; ++$i) {
                 $artist->addTag($this->getRandomReference('tags'));
             }
 

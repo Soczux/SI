@@ -19,7 +19,7 @@ class AlbumFixtures extends AbstractBaseFixtures implements DependentFixtureInte
     {
         $this->createMany(20, 'albums', function ($i) {
             $album = new Album();
-            $album->setName($this->faker->sentence(rand(1,3)));
+            $album->setName($this->faker->sentence(rand(1, 3)));
             $album->setArtist($this->getRandomReference('artists'));
             $album->setLogoUrl($this->faker->imageUrl(640, 480, null, true, $album->getName()));
 

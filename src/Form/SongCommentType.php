@@ -30,7 +30,7 @@ class SongCommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SongComment::class
+            'data_class' => SongComment::class,
         ]);
     }
 }

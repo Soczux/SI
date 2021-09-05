@@ -27,7 +27,7 @@ class ArtistType extends AbstractType
             ->add('name', TextType::class, ['label' => 'artist.name'])
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                'label' => 'artist.country'
+                'label' => 'artist.country',
             ])
             ->add('tags', TextType::class, [
                 'required' => false,

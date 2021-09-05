@@ -20,11 +20,13 @@ class UserService
         $this->userRepository = $userRepository;
         $this->paginator = $paginator;
     }
+
     /**
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function saveUser(User $user) {
+    public function saveUser(User $user)
+    {
         $this->userRepository->save($user);
     }
 

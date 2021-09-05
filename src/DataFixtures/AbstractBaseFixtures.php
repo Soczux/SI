@@ -18,7 +18,7 @@ abstract class AbstractBaseFixtures extends Fixture
     private array $referencesIndex = [];
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {

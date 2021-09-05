@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserController extends AbstractController
 {
@@ -27,7 +26,7 @@ class UserController extends AbstractController
     public function index(User $user): Response
     {
         return $this->render('user/index.html.twig', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -37,11 +36,6 @@ class UserController extends AbstractController
      *      name="user_edit",
      *      methods={"GET","PUT"}
      * )
-     *
-     * @param Request $request
-     * @param User $user
-     *
-     * @return Response
      */
     public function edit(Request $request, User $user): Response
     {
@@ -64,7 +58,7 @@ class UserController extends AbstractController
 
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
         ]);
     }
 }

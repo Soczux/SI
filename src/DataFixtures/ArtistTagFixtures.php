@@ -7,7 +7,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class ArtistTagFixtures extends AbstractBaseFixtures
 {
-
     protected function loadData(ObjectManager $manager): void
     {
         $this->createMany(50, 'tags', function () {

@@ -20,11 +20,6 @@ class FileUploader
         $this->songTargetDirectory = $songTargetDirectory;
     }
 
-    /**
-     * @param UploadedFile $file
-     *
-     * @return string
-     */
     public function uploadSong(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -40,11 +35,6 @@ class FileUploader
         return $fileName;
     }
 
-    /**
-     * @param UploadedFile $file
-     *
-     * @return string
-     */
     public function uploadAlbum(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);

@@ -30,7 +30,7 @@ class AlbumCommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => AlbumComment::class
+            'data_class' => AlbumComment::class,
         ]);
     }
 }

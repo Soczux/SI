@@ -51,13 +51,13 @@ class ArtistController extends AbstractController
     {
         $artistComment = new ArtistComment();
 
-        $commentForm = $this->createForm(ArtistCommentType::class, $artistComment, ['method'=>"POST"]);
+        $commentForm = $this->createForm(ArtistCommentType::class, $artistComment, ['method' => 'POST']);
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $this->artistService->addComment($artist, $artistComment, $this->getUser());
 
-            return $this->redirectToRoute('artist', ['id'=>$artist->getId()]);
+            return $this->redirectToRoute('artist', ['id' => $artist->getId()]);
         }
 
         return $this->render('artist/artist.html.twig', [
