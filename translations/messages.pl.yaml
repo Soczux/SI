@@ -14,8 +14,10 @@ pages:
     album_add: dodaj album
     user_management: zarządzaj użytkownikami
 
-    user_page:
-      country_not_provided: Anonimowy
+  user_page:
+    country_not_provided: Anonimowy
+    label_new_password: Nowe hasło
+    label_new_password_repeat: Powtórz hasło
 
 artist:
   name: artysta
