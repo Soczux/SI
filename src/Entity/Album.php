@@ -28,7 +28,7 @@ class Album
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="logoUrl", type="string", length=255)
      */
     private string $logoUrl;
 
