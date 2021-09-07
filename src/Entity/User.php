@@ -205,7 +205,7 @@ class User implements UserInterface
      */
     public function getCountry(): ?Country
     {
-        return $this->country;
+        return $this->country ?? null;
     }
 
     /**
