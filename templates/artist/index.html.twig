@@ -21,7 +21,7 @@
             {% for artist in pagination.items %}
                 <tr>
                     <td>{{ artist.name }}</td>
-                    <td><img width="150px" src="{{ asset('build/gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.name }}"></td>
+                    <td><img width="150px" src="{{ asset('gfx/countries/' ~ artist.country.iso | lower ~ '.png') }}" alt="{{ artist.country.name }}"></td>
                     <td>
                         {% if artist.tags is defined and artist.tags | length %}
                             {% for tag in artist.tags %}

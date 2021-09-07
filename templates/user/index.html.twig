@@ -7,7 +7,9 @@
         <p>{{ 'user.username' | trans | capitalize }}: {{ user.username }}</p>
         <p>{{ 'user.email' | trans | capitalize }}: {{ user.email }}</p>
         {% if not user.country is null %}
-            <p>{{ 'user.country' | trans | capitalize }}: <img style="width: 150px" src="{{ asset('build/gfx/countries/' ~ user.country.iso | lower ~ '.png') }}" alt="{{ user.country.iso | lower }}"></p>
+            <p>{{ 'user.country' | trans | capitalize }}:
+                <img style="width: 150px" src="{{ asset('gfx/countries/' ~ user.country.iso | lower ~ '.png') }}" alt="{{ user.country.name | lower }}">
+            </p>
         {% else %}
             <p>{{ 'user.country' | trans | capitalize }}: {{ 'pages.user_page.country_not_provided' | trans }}</p>
         {% endif %}

@@ -15,7 +15,7 @@ Encore
     //.setManifestKeyPrefix('build/')
     .copyFiles({
         from: './assets/gfx',
-        to: 'gfx/[path][name].[ext]'
+        to: '../gfx/[path][name].[ext]'
     })
     /*
      * ENTRY CONFIG
