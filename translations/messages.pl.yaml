@@ -41,6 +41,7 @@ actions:
   save: zapisz
   comment: skomentuj
   register: zarejestruj
+  login: zaloguj
 
 user:
   username: nazwa użytkownika
