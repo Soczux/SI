@@ -144,6 +144,8 @@
                         {% else %}
                             {% block profile_panel %}
                                 <div id="profile-panel">
+                                    <p>{{ app.user.username }}</p>
+
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <a href="{{ path('admin_panel') }}">{{ 'pages.admin_panel.label' | trans }}</a>
                                     {% endif %}

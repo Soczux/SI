@@ -40,11 +40,13 @@ actions:
   delete: usuń
   save: zapisz
   comment: skomentuj
+  register: zarejestruj
 
 user:
   username: nazwa użytkownika
   email: e-mail
   country: kraj pochodzenia
+  password: hasło
 
 comment:
   content: treść [max 1000 znaków]
