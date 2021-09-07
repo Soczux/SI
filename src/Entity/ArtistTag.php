@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Entity;
 
@@ -49,21 +52,35 @@ class ArtistTag
      */
     private Collection $artists;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->artists = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -71,11 +88,19 @@ class ArtistTag
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface
+     */
     public function getCreatedOn(): DateTimeInterface
     {
         return $this->createdOn;
     }
 
+    /**
+     * @param DateTimeInterface $createdOn
+     *
+     * @return $this
+     */
     public function setCreatedOn(DateTimeInterface $createdOn): self
     {
         $this->createdOn = $createdOn;
@@ -91,6 +116,11 @@ class ArtistTag
         return $this->artists;
     }
 
+    /**
+     * @param Artist $artist
+     *
+     * @return $this
+     */
     public function addArtist(Artist $artist): self
     {
         if (!$this->artists->contains($artist)) {
@@ -101,6 +131,11 @@ class ArtistTag
         return $this;
     }
 
+    /**
+     * @param Artist $artist
+     *
+     * @return $this
+     */
     public function removeArtist(Artist $artist): self
     {
         if ($this->artists->removeElement($artist)) {

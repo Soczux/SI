@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Controller;
 
@@ -11,10 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ *  Album Controller
+ */
 class AlbumController extends AbstractController
 {
     private AlbumService $albumService;
 
+    /**
+     * @param AlbumService $albumService
+     */
     public function __construct(AlbumService $albumService)
     {
         $this->albumService = $albumService;
@@ -25,6 +34,10 @@ class AlbumController extends AbstractController
      *     "/albums",
      *     name="albums"
      * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -46,6 +59,11 @@ class AlbumController extends AbstractController
      *     methods={"GET","POST"},
      *     requirements={"id": "\d+"}
      * )
+     *
+     * @param Request $request
+     * @param Album   $album
+     *
+     * @return Response
      */
     public function album(Request $request, Album $album): Response
     {

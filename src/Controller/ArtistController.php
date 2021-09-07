@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Controller;
 
@@ -11,10 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ *  Artist Controller
+ */
 class ArtistController extends AbstractController
 {
     private ArtistService $artistService;
 
+    /**
+     * @param ArtistService $artistService
+     */
     public function __construct(ArtistService $artistService)
     {
         $this->artistService = $artistService;
@@ -25,6 +34,10 @@ class ArtistController extends AbstractController
      *     "/artists",
      *     name="artists"
      * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function index(Request $request): Response
     {
@@ -46,8 +59,13 @@ class ArtistController extends AbstractController
      *     methods={"GET","POST"},
      *     requirements={"id": "\d+"}
      * )
+     *
+     * @param Request $request
+     * @param Artist  $artist
+     *
+     * @return Response
      */
-    public function artist(Request $request, Artist $artist)
+    public function artist(Request $request, Artist $artist): Response
     {
         $artistComment = new ArtistComment();
 

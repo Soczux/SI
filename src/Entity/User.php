@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Entity;
 
@@ -21,50 +24,53 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      *
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=320)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="users")
      */
-    private $country;
+    private Country $country;
 
     /**
      * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="user")
      */
-    private $albumComments;
+    private Collection $albumComments;
 
     /**
      * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="user")
      */
-    private $artistComments;
+    private Collection $artistComments;
 
     /**
      * @ORM\OneToMany(targetEntity=SongComment::class, mappedBy="user")
      */
-    private $songComments;
+    private Collection $songComments;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->albumComments = new ArrayCollection();
@@ -72,6 +78,9 @@ class User implements UserInterface
         $this->songComments = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -81,12 +90,19 @@ class User implements UserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     *
+     * @return string
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
+    /**
+     * @param string $username
+     *
+     * @return $this
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -96,6 +112,8 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return array
      */
     public function getRoles(): array
     {
@@ -106,6 +124,11 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     *
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -115,12 +138,19 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return string
      */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -133,6 +163,8 @@ class User implements UserInterface
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
      * @see UserInterface
+     *
+     * @return string|null
      */
     public function getSalt(): ?string
     {
@@ -148,11 +180,19 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -160,11 +200,19 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Country|null
+     */
     public function getCountry(): ?Country
     {
         return $this->country;
     }
 
+    /**
+     * @param Country|null $country
+     *
+     * @return $this
+     */
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
@@ -180,6 +228,11 @@ class User implements UserInterface
         return $this->albumComments;
     }
 
+    /**
+     * @param AlbumComment $albumComment
+     *
+     * @return $this
+     */
     public function addAlbumComment(AlbumComment $albumComment): self
     {
         if (!$this->albumComments->contains($albumComment)) {
@@ -190,6 +243,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param AlbumComment $albumComment
+     *
+     * @return $this
+     */
     public function removeAlbumComment(AlbumComment $albumComment): self
     {
         if ($this->albumComments->removeElement($albumComment)) {
@@ -210,6 +268,11 @@ class User implements UserInterface
         return $this->artistComments;
     }
 
+    /**
+     * @param ArtistComment $artistComment
+     *
+     * @return $this
+     */
     public function addArtistComment(ArtistComment $artistComment): self
     {
         if (!$this->artistComments->contains($artistComment)) {
@@ -220,6 +283,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param ArtistComment $artistComment
+     *
+     * @return $this
+     */
     public function removeArtistComment(ArtistComment $artistComment): self
     {
         if ($this->artistComments->removeElement($artistComment)) {
@@ -240,6 +308,11 @@ class User implements UserInterface
         return $this->songComments;
     }
 
+    /**
+     * @param SongComment $songComment
+     *
+     * @return $this
+     */
     public function addSongComment(SongComment $songComment): self
     {
         if (!$this->songComments->contains($songComment)) {
@@ -250,6 +323,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param SongComment $songComment
+     *
+     * @return $this
+     */
     public function removeSongComment(SongComment $songComment): self
     {
         if ($this->songComments->removeElement($songComment)) {

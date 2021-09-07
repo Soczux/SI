@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Service;
 
@@ -11,12 +14,19 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Album service
+ */
 class AlbumService
 {
-    private $albumRepository;
+    private AlbumRepository $albumRepository;
 
-    private $paginator;
+    private PaginatorInterface $paginator;
 
+    /**
+     * @param AlbumRepository    $albumRepository
+     * @param PaginatorInterface $paginator
+     */
     public function __construct(AlbumRepository $albumRepository, PaginatorInterface $paginator)
     {
         $this->albumRepository = $albumRepository;
@@ -24,23 +34,33 @@ class AlbumService
     }
 
     /**
+     * @param Album $album
+     *
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function saveAlbum(Album $album)
+    public function saveAlbum(Album $album): void
     {
         $this->albumRepository->save($album);
     }
 
     /**
+     * @param Album $album
+     *
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function deleteAlbum(Album $album)
+    public function deleteAlbum(Album $album): void
     {
         $this->albumRepository->delete($album);
     }
 
+    /**
+     * @param int   $page
+     * @param array $filters
+     *
+     * @return PaginationInterface
+     */
     public function createPaginatedList(int $page, array $filters = []): PaginationInterface
     {
         return $this->paginator->paginate(
@@ -50,7 +70,15 @@ class AlbumService
         );
     }
 
-    public function addComment(Album $album, AlbumComment $comment, UserInterface $user)
+    /**
+     * @param Album         $album
+     * @param AlbumComment  $comment
+     * @param UserInterface $user
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function addComment(Album $album, AlbumComment $comment, UserInterface $user): void
     {
         $comment->setUser($user);
         $album->addAlbumComment($comment);

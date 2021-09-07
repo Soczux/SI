@@ -1,25 +1,36 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * File uploader
+ */
 class FileUploader
 {
-    private $songTargetDirectory;
-    private $albumTargetDirectory;
+    private string $songTargetDirectory;
+    private string $albumTargetDirectory;
 
     /**
-     * @param $albumTargetDirectory
-     * @param $songTargetDirectory
+     * @param string $albumTargetDirectory
+     * @param string $songTargetDirectory
      */
-    public function __construct($albumTargetDirectory, $songTargetDirectory)
+    public function __construct(string $albumTargetDirectory, string $songTargetDirectory)
     {
         $this->albumTargetDirectory = $albumTargetDirectory;
         $this->songTargetDirectory = $songTargetDirectory;
     }
 
+    /**
+     * @param UploadedFile $file
+     *
+     * @return string
+     */
     public function uploadSong(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -35,6 +46,11 @@ class FileUploader
         return $fileName;
     }
 
+    /**
+     * @param UploadedFile $file
+     *
+     * @return string
+     */
     public function uploadAlbum(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -51,17 +67,17 @@ class FileUploader
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getSongTargetDirectory()
+    public function getSongTargetDirectory(): string
     {
         return $this->songTargetDirectory;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAlbumTargetDirectory()
+    public function getAlbumTargetDirectory(): string
     {
         return $this->albumTargetDirectory;
     }

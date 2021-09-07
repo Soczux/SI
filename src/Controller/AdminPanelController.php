@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Controller;
 
@@ -18,12 +21,13 @@ use App\Service\UserService;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * Admin Panel Controller
+ * 
  * @Route("/admin_panel")
  *
  * @IsGranted("ROLE_ADMIN")
@@ -36,6 +40,13 @@ class AdminPanelController extends AbstractController
     private SongService $songService;
     private UserService $userService;
 
+    /**
+     * @param AlbumService  $albumService
+     * @param ArtistService $artistService
+     * @param FileUploader  $fileUploader
+     * @param SongService   $songService
+     * @param UserService   $userService
+     */
     public function __construct(AlbumService $albumService, ArtistService $artistService, FileUploader $fileUploader, SongService $songService, UserService $userService)
     {
         $this->albumService = $albumService;
@@ -46,7 +57,12 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/", name="admin_panel")
+     * @Route(
+     *     "/",
+     *     name="admin_panel"
+     * )
+     *
+     * @return Response
      */
     public function index(): Response
     {
@@ -54,7 +70,15 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/song/add", name="admin_panel_song_add", methods={"GET","POST"})
+     * @Route(
+     *     "/song/add",
+     *     name="admin_panel_song_add",
+     *     methods={"GET","POST"}
+     * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function songAdd(Request $request): Response
     {
@@ -90,9 +114,18 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/song/{id}/delete/{action?none}", name="admin_panel_song_delete", requirements={"id"="\d+"})
+     * @Route(
+     *     "/song/{id}/delete/{action?none}",
+     *     name="admin_panel_song_delete",
+     *     requirements={"id"="\d+"}
+     * )
+     *
+     * @param Song   $song
+     * @param string $action
+     *
+     * @return Response
      */
-    public function songDelete(Song $song, string $action)
+    public function songDelete(Song $song, string $action): Response
     {
         if ('confirm' === $action) {
             try {
@@ -118,6 +151,11 @@ class AdminPanelController extends AbstractController
      *     requirements={"id": "\d+"},
      *     methods={"GET","PUT"}
      * )
+     *
+     * @param Request $request
+     * @param Song    $song
+     *
+     * @return Response
      */
     public function songEdit(Request $request, Song $song): Response
     {
@@ -151,7 +189,15 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/album/add", name="admin_panel_album_add", methods={"GET","POST"})
+     * @Route(
+     *     "/album/add",
+     *     name="admin_panel_album_add",
+     *     methods={"GET","POST"}
+     * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function albumAdd(Request $request): Response
     {
@@ -187,9 +233,18 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/album/{id}/delete/{action?none}", name="admin_panel_album_delete", requirements={"id"="\d+"})
+     * @Route(
+     *     "/album/{id}/delete/{action?none}",
+     *     name="admin_panel_album_delete",
+     *     requirements={"id"="\d+"}
+     * )
+     *
+     * @param Album  $album
+     * @param string $action
+     *
+     * @return Response
      */
-    public function albumDelete(Album $album, string $action)
+    public function albumDelete(Album $album, string $action): Response
     {
         if ('confirm' === $action) {
             try {
@@ -215,6 +270,11 @@ class AdminPanelController extends AbstractController
      *     requirements={"id": "\d+"},
      *     methods={"GET","PUT"}
      * )
+     *
+     * @param Request $request
+     * @param Album   $album
+     *
+     * @return Response
      */
     public function albumEdit(Request $request, Album $album): Response
     {
@@ -248,7 +308,15 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/artist/add", name="admin_panel_artist_add", methods={"GET","POST"})
+     * @Route(
+     *     "/artist/add",
+     *     name="admin_panel_artist_add",
+     *     methods={"GET","POST"}
+     * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function artistAdd(Request $request): Response
     {
@@ -277,9 +345,18 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/artist/{id}/delete/{action?none}", name="admin_panel_artist_delete", requirements={"id"="\d+"})
+     * @Route(
+     *     "/artist/{id}/delete/{action?none}",
+     *     name="admin_panel_artist_delete",
+     *     requirements={"id"="\d+"}
+     * )
+     *
+     * @param Artist $artist
+     * @param string $action
+     *
+     * @return Response
      */
-    public function artistDelete(Artist $artist, string $action)
+    public function artistDelete(Artist $artist, string $action): Response
     {
         if ('confirm' === $action) {
             try {
@@ -305,6 +382,11 @@ class AdminPanelController extends AbstractController
      *     requirements={"id": "\d+"},
      *     methods={"GET","PUT"}
      * )
+     *
+     * @param Request $request
+     * @param Artist  $artist
+     *
+     * @return Response
      */
     public function artistEdit(Request $request, Artist $artist): Response
     {
@@ -337,6 +419,10 @@ class AdminPanelController extends AbstractController
      *     requirements={"id": "\d+"},
      *     methods={"GET", "PUT"}
      * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function userList(Request $request): Response
     {
@@ -355,6 +441,11 @@ class AdminPanelController extends AbstractController
      *     requirements={"id": "\d+"},
      *     methods={"GET", "PUT"}
      * )
+     *
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return Response
      */
     public function userEdit(Request $request, User $user): Response
     {
@@ -382,9 +473,18 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}/delete/{action?none}", name="admin_panel_user_delete", requirements={"id"="\d+"})
+     * @Route(
+     *     "/user/{id}/delete/{action?none}",
+     *     name="admin_panel_user_delete",
+     *     requirements={"id"="\d+"}
+     * )
+     *
+     * @param User   $user
+     * @param string $action
+     *
+     * @return Response
      */
-    public function userDelete(User $user, string $action)
+    public function userDelete(User $user, string $action): Response
     {
         if ('confirm' === $action) {
             try {

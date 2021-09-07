@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Entity;
 
@@ -17,44 +20,58 @@ class Album
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $logoUrl;
+    private string $logoUrl;
 
     /**
      * @ORM\ManyToOne(targetEntity=Artist::class, inversedBy="albums")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $artist;
+    private Artist $artist;
 
     /**
      * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="album", cascade={"remove", "persist"})
      */
-    private $albumComments;
+    private Collection $albumComments;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->albumComments = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -62,11 +79,19 @@ class Album
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLogoUrl(): ?string
     {
         return $this->logoUrl;
     }
 
+    /**
+     * @param string $logoUrl
+     *
+     * @return $this
+     */
     public function setLogoUrl(string $logoUrl): self
     {
         $this->logoUrl = $logoUrl;
@@ -74,11 +99,19 @@ class Album
         return $this;
     }
 
+    /**
+     * @return Artist|null
+     */
     public function getArtist(): ?Artist
     {
         return $this->artist;
     }
 
+    /**
+     * @param Artist|null $artist
+     *
+     * @return $this
+     */
     public function setArtist(?Artist $artist): self
     {
         $this->artist = $artist;
@@ -94,6 +127,11 @@ class Album
         return $this->albumComments;
     }
 
+    /**
+     * @param AlbumComment $albumComment
+     *
+     * @return $this
+     */
     public function addAlbumComment(AlbumComment $albumComment): self
     {
         if (!$this->albumComments->contains($albumComment)) {
@@ -104,6 +142,11 @@ class Album
         return $this;
     }
 
+    /**
+     * @param AlbumComment $albumComment
+     *
+     * @return $this
+     */
     public function removeAlbumComment(AlbumComment $albumComment): self
     {
         if ($this->albumComments->removeElement($albumComment)) {

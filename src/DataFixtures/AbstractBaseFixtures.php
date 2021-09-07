@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\DataFixtures;
 
@@ -9,6 +12,9 @@ use Faker\Generator;
 use InvalidArgumentException;
 use LogicException;
 
+/**
+ *  Abstract base fixtures
+ */
 abstract class AbstractBaseFixtures extends Fixture
 {
     protected Generator $faker;
@@ -27,8 +33,16 @@ abstract class AbstractBaseFixtures extends Fixture
         $this->loadData($manager);
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     abstract protected function loadData(ObjectManager $manager): void;
 
+    /**
+     * @param int      $count
+     * @param string   $groupName
+     * @param callable $factory
+     */
     protected function createMany(int $count, string $groupName, callable $factory): void
     {
         for ($i = 0; $i < $count; ++$i) {
@@ -45,6 +59,12 @@ abstract class AbstractBaseFixtures extends Fixture
         }
     }
 
+    /**
+     * @param string $groupName
+     * @param int    $count
+     *
+     * @return array
+     */
     protected function getRandomReferences(string $groupName, int $count): array
     {
         $references = [];
@@ -55,6 +75,11 @@ abstract class AbstractBaseFixtures extends Fixture
         return $references;
     }
 
+    /**
+     * @param string $groupName
+     *
+     * @return object
+     */
     protected function getRandomReference(string $groupName): object
     {
         if (!isset($this->referencesIndex[$groupName])) {

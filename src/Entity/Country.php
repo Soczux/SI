@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Entity;
 
@@ -17,44 +20,58 @@ class Country
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=80)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Artist::class, mappedBy="country")
      */
-    private $artists;
+    private Collection $artists;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="country")
      */
-    private $users;
+    private Collection $users;
 
     /**
      * @ORM\Column(type="string", length=2)
      */
-    private $iso;
+    private string $iso;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->artists = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -70,6 +87,11 @@ class Country
         return $this->artists;
     }
 
+    /**
+     * @param Artist $artist
+     *
+     * @return $this
+     */
     public function addArtist(Artist $artist): self
     {
         if (!$this->artists->contains($artist)) {
@@ -80,6 +102,11 @@ class Country
         return $this;
     }
 
+    /**
+     * @param Artist $artist
+     *
+     * @return $this
+     */
     public function removeArtist(Artist $artist): self
     {
         if ($this->artists->removeElement($artist)) {
@@ -100,6 +127,11 @@ class Country
         return $this->users;
     }
 
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
     public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {
@@ -110,6 +142,11 @@ class Country
         return $this;
     }
 
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
     public function removeUser(User $user): self
     {
         if ($this->users->removeElement($user)) {
@@ -122,11 +159,19 @@ class Country
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getIso(): ?string
     {
         return $this->iso;
     }
 
+    /**
+     * @param string $iso
+     *
+     * @return $this
+     */
     public function setIso(string $iso): self
     {
         $this->iso = $iso;
@@ -134,6 +179,9 @@ class Country
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;

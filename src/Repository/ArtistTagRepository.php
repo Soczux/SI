@@ -1,9 +1,14 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Repository;
 
 use App\Entity\ArtistTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,49 +19,35 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ArtistTagRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ArtistTag::class);
     }
 
+    /**
+     * @param ArtistTag $artistTag
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function save(ArtistTag $artistTag)
     {
         $this->_em->persist($artistTag);
         $this->_em->flush();
     }
 
+    /**
+     * @param ArtistTag $artistTag
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function delete(ArtistTag $artistTag)
     {
         $this->_em->remove($artistTag);
         $this->_em->flush();
     }
-
-    // /**
-    //  * @return ArtistTag[] Returns an array of ArtistTag objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ArtistTag
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

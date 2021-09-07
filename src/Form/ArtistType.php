@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Form;
 
@@ -12,15 +15,24 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Artist type
+ */
 class ArtistType extends AbstractType
 {
     private ArtistTagDataTransformer $artistTagDataTransformer;
 
+    /**
+     * @param ArtistTagDataTransformer $artistTagDataTransformer
+     */
     public function __construct(ArtistTagDataTransformer $artistTagDataTransformer)
     {
         $this->artistTagDataTransformer = $artistTagDataTransformer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,6 +51,9 @@ class ArtistType extends AbstractType
         $builder->get('tags')->addModelTransformer($this->artistTagDataTransformer);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

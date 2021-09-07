@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Entity;
 
@@ -17,39 +20,42 @@ class Artist
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="artists")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $country;
+    private Country $country;
 
     /**
      * @ORM\OneToMany(targetEntity=Song::class, mappedBy="artist")
      */
-    private $songs;
+    private Collection $songs;
 
     /**
      * @ORM\OneToMany(targetEntity=Album::class, mappedBy="artist")
      */
-    private $albums;
+    private Collection $albums;
 
     /**
      * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="artist", cascade={"remove", "persist"})
      */
-    private $artistComments;
+    private Collection $artistComments;
 
     /**
      * @ORM\ManyToMany(targetEntity=ArtistTag::class, inversedBy="artists")
      */
-    private $tags;
+    private Collection $tags;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->songs = new ArrayCollection();
@@ -58,16 +64,27 @@ class Artist
         $this->tags = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -75,11 +92,19 @@ class Artist
         return $this;
     }
 
+    /**
+     * @return Country|null
+     */
     public function getCountry(): ?Country
     {
         return $this->country;
     }
 
+    /**
+     * @param Country|null $country
+     *
+     * @return $this
+     */
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
@@ -95,6 +120,11 @@ class Artist
         return $this->songs;
     }
 
+    /**
+     * @param Song $song
+     *
+     * @return $this
+     */
     public function addSong(Song $song): self
     {
         if (!$this->songs->contains($song)) {
@@ -105,6 +135,11 @@ class Artist
         return $this;
     }
 
+    /**
+     * @param Song $song
+     *
+     * @return $this
+     */
     public function removeSong(Song $song): self
     {
         if ($this->songs->removeElement($song)) {
@@ -125,6 +160,11 @@ class Artist
         return $this->albums;
     }
 
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
     public function addAlbum(Album $album): self
     {
         if (!$this->albums->contains($album)) {
@@ -135,6 +175,11 @@ class Artist
         return $this;
     }
 
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
     public function removeAlbum(Album $album): self
     {
         if ($this->albums->removeElement($album)) {
@@ -155,6 +200,11 @@ class Artist
         return $this->artistComments;
     }
 
+    /**
+     * @param ArtistComment $artistComment
+     *
+     * @return $this
+     */
     public function addArtistComment(ArtistComment $artistComment): self
     {
         if (!$this->artistComments->contains($artistComment)) {
@@ -165,6 +215,11 @@ class Artist
         return $this;
     }
 
+    /**
+     * @param ArtistComment $artistComment
+     *
+     * @return $this
+     */
     public function removeArtistComment(ArtistComment $artistComment): self
     {
         if ($this->artistComments->removeElement($artistComment)) {
@@ -177,6 +232,9 @@ class Artist
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;
@@ -190,6 +248,11 @@ class Artist
         return $this->tags;
     }
 
+    /**
+     * @param ArtistTag $tag
+     *
+     * @return $this
+     */
     public function addTag(ArtistTag $tag): self
     {
         if (!$this->tags->contains($tag)) {
@@ -199,6 +262,11 @@ class Artist
         return $this;
     }
 
+    /**
+     * @param ArtistTag $tag
+     *
+     * @return $this
+     */
     public function removeTag(ArtistTag $tag): self
     {
         $this->tags->removeElement($tag);

@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Entity;
 
@@ -17,44 +20,58 @@ class Song
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url;
+    private string $url;
 
     /**
      * @ORM\ManyToOne(targetEntity=Artist::class, inversedBy="songs")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $artist;
+    private Artist $artist;
 
     /**
      * @ORM\OneToMany(targetEntity=SongComment::class, mappedBy="song", cascade={"remove", "persist"})
      */
-    private $songComments;
+    private Collection $songComments;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->songComments = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -62,11 +79,19 @@ class Song
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
+    /**
+     * @param string $url
+     *
+     * @return $this
+     */
     public function setUrl(string $url): self
     {
         $this->url = $url;
@@ -74,11 +99,19 @@ class Song
         return $this;
     }
 
+    /**
+     * @return Artist|null
+     */
     public function getArtist(): ?Artist
     {
         return $this->artist;
     }
 
+    /**
+     * @param Artist|null $artist
+     *
+     * @return $this
+     */
     public function setArtist(?Artist $artist): self
     {
         $this->artist = $artist;
@@ -94,6 +127,11 @@ class Song
         return $this->songComments;
     }
 
+    /**
+     * @param SongComment $songComment
+     *
+     * @return $this
+     */
     public function addSongComment(SongComment $songComment): self
     {
         if (!$this->songComments->contains($songComment)) {
@@ -104,6 +142,11 @@ class Song
         return $this;
     }
 
+    /**
+     * @param SongComment $songComment
+     *
+     * @return $this
+     */
     public function removeSongComment(SongComment $songComment): self
     {
         if ($this->songComments->removeElement($songComment)) {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Controller;
 
@@ -11,17 +14,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ *  User Controller
+ */
 class UserController extends AbstractController
 {
     private UserService $userService;
 
+    /**
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
     /**
-     * @Route("/user/{id}", name="user", requirements={"id": "\d+"})
+     * @Route(
+     *     "/user/{id}",
+     *     name="user",
+     *     requirements={"id": "\d+"}
+     * )
+     *
+     * @param User $user
+     *
+     * @return Response
      */
     public function index(User $user): Response
     {
@@ -36,8 +53,12 @@ class UserController extends AbstractController
      *      name="user_edit",
      *      methods={"GET","PUT"}
      * )
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request): Response
     {
         $form = $this->createForm(UserType::class, $this->getUser(), ['method' => 'PUT']);
         $form->handleRequest($request);

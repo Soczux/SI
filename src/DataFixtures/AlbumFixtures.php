@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\DataFixtures;
 
@@ -6,8 +9,17 @@ use App\Entity\Album;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
+/**
+ *  Album fixtures
+ */
 class AlbumFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
+    /**
+     * This method must return an array of fixtures classes
+     * on which the implementing class depends on
+     *
+     * @return array
+     */
     public function getDependencies(): array
     {
         return [
@@ -15,6 +27,9 @@ class AlbumFixtures extends AbstractBaseFixtures implements DependentFixtureInte
         ];
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     protected function loadData(ObjectManager $manager): void
     {
         $this->createMany(20, 'albums', function ($i) {

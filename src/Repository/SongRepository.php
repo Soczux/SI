@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\Repository;
 
@@ -19,6 +22,9 @@ class SongRepository extends ServiceEntityRepository
 {
     const PAGINATOR_ITEMS_PER_PAGE = 12;
 
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Song::class);
@@ -48,6 +54,11 @@ class SongRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param array $filters
+     *
+     * @return QueryBuilder
+     */
     public function queryAll(array $filters = []): QueryBuilder
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
@@ -68,37 +79,13 @@ class SongRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * @param QueryBuilder|null $queryBuilder
+     *
+     * @return QueryBuilder
+     */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('song');
     }
-
-    // /**
-    //  * @return Song[] Returns an array of Song objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Song
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

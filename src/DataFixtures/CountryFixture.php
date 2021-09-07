@@ -1,10 +1,16 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\DataFixtures;
 
 use App\Entity\Country;
 use Doctrine\Persistence\ObjectManager;
 
+/**
+ *  Country fixtures
+ */
 class CountryFixture extends AbstractBaseFixtures
 {
     private array $countries = [
@@ -249,6 +255,9 @@ class CountryFixture extends AbstractBaseFixtures
         ['id' => 239, 'name' => 'Zimbabwe', 'iso' => 'ZW'],
     ];
 
+    /**
+     * @param ObjectManager $manager
+     */
     protected function loadData(ObjectManager $manager): void
     {
         $this->createMany(count($this->countries), 'countries', function ($i) {

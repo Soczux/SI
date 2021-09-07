@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is a part o Marta Soczyńska's SI project
+ */
 
 namespace App\DataFixtures;
 
@@ -7,6 +10,9 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ *  User fixtures
+ */
 class UserFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
     public const ADMIN_REFERENCE = 'admin';
@@ -15,11 +21,20 @@ class UserFixtures extends AbstractBaseFixtures implements DependentFixtureInter
 
     private UserPasswordEncoderInterface $passwordEncoder;
 
+    /**
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * This method must return an array of fixtures classes
+     * on which the implementing class depends on
+     *
+     * @return array
+     */
     public function getDependencies(): array
     {
         return [
@@ -27,6 +42,9 @@ class UserFixtures extends AbstractBaseFixtures implements DependentFixtureInter
         ];
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     protected function loadData(ObjectManager $manager): void
     {
         $admin = new User();
