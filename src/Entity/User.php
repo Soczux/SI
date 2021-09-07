@@ -54,17 +54,17 @@ class User implements UserInterface
     private Country $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=AlbumComment::class, mappedBy="user", cascade={"remove", "persist"})
      */
     private Collection $albumComments;
 
     /**
-     * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=ArtistComment::class, mappedBy="user", cascade={"remove", "persist"})
      */
     private Collection $artistComments;
 
     /**
-     * @ORM\OneToMany(targetEntity=SongComment::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=SongComment::class, mappedBy="user", cascade={"remove", "persist"})
      */
     private Collection $songComments;
 
