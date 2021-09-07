@@ -64,9 +64,11 @@ class ArtistRepository extends ServiceEntityRepository
         $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
                 'partial artist.{id,name}',
-                'partial tags.{id,name}'
+                'partial tags.{id,name}',
+                'partial country.{id,name,iso}',
             )
             ->leftJoin('artist.tags', 'tags')
+            ->leftJoin('artist.country', 'country')
         ;
 
         if (array_key_exists('tag_id', $filters) && $filters['tag_id'] > 0) {
