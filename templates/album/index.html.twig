@@ -11,7 +11,7 @@
         <table id="albums-table" class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'album.title' | trans, 'album.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'album.title' | trans, 'album.name') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'album.artist' | trans, 'artist.name') }}</th>
                 <th>{{ 'album.cover' | trans }}</th>
                 <th>{{ 'actions.label' | trans }}</th>
