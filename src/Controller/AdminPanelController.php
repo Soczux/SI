@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Admin Panel Controller
- * 
+ *
  * @Route("/admin_panel")
  *
  * @IsGranted("ROLE_ADMIN")
