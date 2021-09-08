@@ -163,6 +163,7 @@ class AdminPanelController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $oldSongFile = $song->getUrl();
             $song = $form->getData();
 
             $songFile = $form->get('url')->getData();
@@ -170,6 +171,8 @@ class AdminPanelController extends AbstractController
             if ($songFile) {
                 $songFilename = $this->fileUploader->uploadSong($songFile);
                 $song->setUrl($songFilename);
+            } else {
+                $song->setUrl($oldSongFile);
             }
 
             try {
@@ -183,8 +186,8 @@ class AdminPanelController extends AbstractController
             }
         }
 
-        return $this->render('admin_panel/song/add.html.twig', [
-            'song_add_form' => $form->createView(),
+        return $this->render('admin_panel/song/edit.html.twig', [
+            'song_edit_form' => $form->createView(),
         ]);
     }
 
@@ -282,6 +285,7 @@ class AdminPanelController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $oldAlbumFile = $album->getLogoUrl();
             $album = $form->getData();
 
             $coverFile = $form->get('logo')->getData();
@@ -289,6 +293,8 @@ class AdminPanelController extends AbstractController
             if ($coverFile) {
                 $coverFilename = $this->fileUploader->uploadAlbum($coverFile);
                 $album->setLogoUrl($coverFilename);
+            } else {
+                $album->setLogoUrl($oldAlbumFile);
             }
 
             try {
@@ -302,8 +308,8 @@ class AdminPanelController extends AbstractController
             }
         }
 
-        return $this->render('admin_panel/album/add.html.twig', [
-            'album_add_form' => $form->createView(),
+        return $this->render('admin_panel/album/edit.html.twig', [
+            'album_edit_form' => $form->createView(),
         ]);
     }
 

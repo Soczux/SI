@@ -1,0 +1,7 @@
+{% extends 'admin_panel/index.html.twig' %}
+
+{% block title %}{{ 'pages.admin_panel.song_add' | trans | capitalize }}{% endblock %}
+
+{% block subcontent %}
+    {{ form(song_edit_form, { attr: { novalidate: 'novalidate' }}) }}
+{% endblock %}
